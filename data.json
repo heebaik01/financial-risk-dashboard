@@ -1,263 +1,39 @@
 {
-  "updated_at": "2026-07-24T07:02:41.416958+00:00",
+  "updated_at": "2026-07-24T07:06:16.234249+00:00",
   "indicators": {
-    "sp500": {
-      "name": "S&P 500",
-      "source": "FRED",
-      "series_id": "SP500",
-      "current": 7408.3,
-      "previous": 7498.96,
-      "change_pct": -1.21,
-      "date": "2026-07-23",
-      "history": [
-        {
-          "date": "2026-07-17",
-          "value": 7457.69
-        },
-        {
-          "date": "2026-07-20",
-          "value": 7443.28
-        },
-        {
-          "date": "2026-07-21",
-          "value": 7509.2
-        },
-        {
-          "date": "2026-07-22",
-          "value": 7498.96
-        },
-        {
-          "date": "2026-07-23",
-          "value": 7408.3
-        }
-      ]
-    },
-    "fx": {
-      "name": "USD/KRW",
-      "source": "FRED",
-      "series_id": "DEXKOUS",
-      "current": 1489.44,
-      "previous": 1478.2,
-      "change_pct": 0.76,
-      "date": "2026-07-17",
-      "history": [
-        {
-          "date": "2026-07-13",
-          "value": 1492.63
-        },
-        {
-          "date": "2026-07-14",
-          "value": 1490.26
-        },
-        {
-          "date": "2026-07-15",
-          "value": 1488.39
-        },
-        {
-          "date": "2026-07-16",
-          "value": 1478.2
-        },
-        {
-          "date": "2026-07-17",
-          "value": 1489.44
-        }
-      ]
-    },
-    "bond": {
-      "name": "US 10Y Treasury",
-      "source": "FRED",
-      "series_id": "DGS10",
-      "current": 4.67,
-      "previous": 4.63,
-      "change_pct": 0.86,
-      "date": "2026-07-22",
-      "history": [
-        {
-          "date": "2026-07-16",
-          "value": 4.57
-        },
-        {
-          "date": "2026-07-17",
-          "value": 4.55
-        },
-        {
-          "date": "2026-07-20",
-          "value": 4.6
-        },
-        {
-          "date": "2026-07-21",
-          "value": 4.63
-        },
-        {
-          "date": "2026-07-22",
-          "value": 4.67
-        }
-      ]
-    },
-    "vix": {
-      "name": "VIX",
-      "source": "FRED",
-      "series_id": "VIXCLS",
-      "current": 16.64,
-      "previous": 17.05,
-      "change_pct": -2.4,
-      "date": "2026-07-22",
-      "history": [
-        {
-          "date": "2026-07-16",
-          "value": 16.73
-        },
-        {
-          "date": "2026-07-17",
-          "value": 18.77
-        },
-        {
-          "date": "2026-07-20",
-          "value": 18.65
-        },
-        {
-          "date": "2026-07-21",
-          "value": 17.05
-        },
-        {
-          "date": "2026-07-22",
-          "value": 16.64
-        }
-      ]
-    },
-    "m2": {
-      "name": "M2 Money Supply",
-      "source": "FRED",
-      "series_id": "M2SL",
-      "current": 23052.3,
-      "previous": 22804.5,
-      "change_pct": 1.09,
-      "date": "2026-05-01",
-      "history": [
-        {
-          "date": "2026-01-01",
-          "value": 22429.3
-        },
-        {
-          "date": "2026-02-01",
-          "value": 22626.9
-        },
-        {
-          "date": "2026-03-01",
-          "value": 22686.2
-        },
-        {
-          "date": "2026-04-01",
-          "value": 22804.5
-        },
-        {
-          "date": "2026-05-01",
-          "value": 23052.3
-        }
-      ]
-    },
-    "oil": {
-      "name": "WTI Crude Oil",
-      "source": "FRED",
-      "series_id": "DCOILWTICO",
-      "current": 84.38,
-      "previous": 83.43,
-      "change_pct": 1.14,
-      "date": "2026-07-20",
-      "history": [
-        {
-          "date": "2026-07-14",
-          "value": 80.44
-        },
-        {
-          "date": "2026-07-15",
-          "value": 80.73
-        },
-        {
-          "date": "2026-07-16",
-          "value": 80.03
-        },
-        {
-          "date": "2026-07-17",
-          "value": 83.43
-        },
-        {
-          "date": "2026-07-20",
-          "value": 84.38
-        }
-      ]
-    },
     "btc": {
       "name": "Bitcoin",
       "source": "CoinGecko",
-      "current": 65435.8247075406,
-      "previous": 65052.47667067735,
-      "change_pct": 0.59,
+      "current": 65496.829662472184,
+      "previous": 65043.65332951998,
+      "change_pct": 0.7,
       "date": "2026-07-24",
       "history": [
         {
           "date": "2026-07-23",
-          "value": 66077.05646514206
+          "value": 66083.46138887311
         },
         {
           "date": "2026-07-24",
-          "value": 65052.47667067735
+          "value": 65043.65332951998
         },
         {
           "date": "2026-07-24",
-          "value": 65435.8247075406
+          "value": 65496.829662472184
         }
       ]
     },
     "gold": {
       "name": "Gold ($/oz)",
       "source": "CoinGecko",
-      "current": 4035.29,
-      "previous": 4110.51,
-      "change_pct": -1.83,
+      "current": 4035.58,
+      "previous": 4109.13,
+      "change_pct": -1.79,
       "date": "2026-07-24",
       "history": [
         {
           "date": "2026-07-24",
-          "value": 4035.29
-        }
-      ]
-    },
-    "kospi": {
-      "name": "KOSPI",
-      "source": "ECOS",
-      "current": 7096.89,
-      "previous": 6797.7,
-      "change_pct": 4.4,
-      "date": "20260723",
-      "history": [
-        {
-          "date": "20260714",
-          "value": 6856.83
-        },
-        {
-          "date": "20260715",
-          "value": 7284.41
-        },
-        {
-          "date": "20260716",
-          "value": 6820.6
-        },
-        {
-          "date": "20260720",
-          "value": 6516.27
-        },
-        {
-          "date": "20260721",
-          "value": 6747.95
-        },
-        {
-          "date": "20260722",
-          "value": 6797.7
-        },
-        {
-          "date": "20260723",
-          "value": 7096.89
+          "value": 4035.58
         }
       ]
     }
