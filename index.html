@@ -773,7 +773,7 @@
         panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
     }
 
-    // CORS 프록시 목록 (file:// 프로토콜 대응)
+    // CORS 프록시 목록
     const corsProxies = [
         'https://api.allorigins.win/raw?url=',
         'https://corsproxy.io/?',
@@ -787,21 +787,13 @@
     }
 
     async function fetchWithCorsProxy(url) {
-        // HTTPS 환경이면 직접 호출만 시도 (프록시 불필요)
-        if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
-            try {
-                const res = await fetchWithTimeout(url);
-                if (res.ok) return res;
-            } catch(e) { /* fall through */ }
-            return null;
-        }
-
-        // file:// 환경: 직접 호출 시도 후 프록시 폴백
+        // 먼저 직접 호출 시도
         try {
             const res = await fetchWithTimeout(url);
             if (res.ok) return res;
         } catch(e) { /* 직접 호출 실패, 프록시 시도 */ }
 
+        // 프록시 순차 시도
         for (const proxy of corsProxies) {
             try {
                 const res = await fetchWithTimeout(proxy + encodeURIComponent(url));
