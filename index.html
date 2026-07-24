@@ -1098,151 +1098,98 @@
     }
 
     async function loadAPIData() {
-        // FRED 데이터 로드 시도
-        const cfg = getConfig();
-        if (cfg.fredKey) {
-            // VIX
-            const vixData = await fetchFRED('VIXCLS');
-            if (vixData && vixData.length >= 2) {
-                const latest = vixData[vixData.length - 1];
-                const prev = vixData[vixData.length - 2];
-                document.getElementById('valVIX').textContent = latest.value.toFixed(1);
-                currentValues.vix = latest.value;
-                showDailyChange('chgVIX', latest.value, prev.value, true);
-            } else if (vixData && vixData.length > 0) {
-                document.getElementById('valVIX').textContent = vixData[vixData.length - 1].value.toFixed(1);
+        // data.json에서 미리 수집된 데이터 로드 (GitHub Actions가 매시간 업데이트)
+        try {
+            const res = await fetch('data.json?t=' + Date.now());
+            if (!res.ok) throw new Error('data.json not found');
+            const data = await res.json();
+
+            const indicators = data.indicators || {};
+
+            // S&P 500
+            if (indicators.sp500) {
+                const d = indicators.sp500;
+                document.getElementById('valSP').textContent = Math.round(d.current).toLocaleString();
+                currentValues.sp500 = d.current;
+                if (d.change_pct !== null) showDailyChange('chgSP', d.current, d.previous, false);
+                setStatus('statusFRED', 'online');
+            }
+
+            // KOSPI
+            if (indicators.kospi) {
+                const d = indicators.kospi;
+                document.getElementById('valKOSPI').textContent = Math.round(d.current).toLocaleString();
+                currentValues.kospi = d.current;
+                if (d.change_pct !== null) showDailyChange('chgKOSPI', d.current, d.previous, false);
+                setStatus('statusECOS', 'online');
+            }
+
+            // USD/KRW
+            if (indicators.fx) {
+                const d = indicators.fx;
+                document.getElementById('valFX').textContent = Math.round(d.current).toLocaleString();
+                currentValues.fx = d.current;
+                if (d.change_pct !== null) showDailyChange('chgFX', d.current, d.previous, true);
+            }
+
+            // US 10Y Bond
+            if (indicators.bond) {
+                const d = indicators.bond;
+                document.getElementById('valBond').textContent = d.current.toFixed(2) + '%';
+                currentValues.bond = d.current;
+                if (d.change_pct !== null) showDailyChange('chgBond', d.current, d.previous, true);
+            }
+
+            // Bitcoin
+            if (indicators.btc) {
+                const d = indicators.btc;
+                document.getElementById('valBTC').textContent = '$' + Math.round(d.current).toLocaleString();
+                currentValues.btc = d.current;
+                if (d.change_pct !== null) showDailyChange('chgBTC', d.current, d.previous, false);
+                setStatus('statusCoinGecko', 'online');
             }
 
             // M2
-            const m2Data = await fetchFRED('M2SL');
-            if (m2Data && m2Data.length >= 2) {
-                const latest = m2Data[m2Data.length - 1];
-                const prev = m2Data[m2Data.length - 2];
-                document.getElementById('valM2').textContent = '$' + (latest.value / 1000).toFixed(1) + 'T';
-                currentValues.m2 = latest.value / 1000;
-                showDailyChange('chgM2', latest.value, prev.value, false);
-            } else if (m2Data && m2Data.length > 0) {
-                document.getElementById('valM2').textContent = '$' + (m2Data[m2Data.length - 1].value / 1000).toFixed(1) + 'T';
+            if (indicators.m2) {
+                const d = indicators.m2;
+                document.getElementById('valM2').textContent = '$' + (d.current / 1000).toFixed(1) + 'T';
+                currentValues.m2 = d.current / 1000;
+                if (d.change_pct !== null) showDailyChange('chgM2', d.current, d.previous, false);
             }
 
-            // 10Y 금리
-            const bondData = await fetchFRED('DGS10');
-            if (bondData && bondData.length >= 2) {
-                const latest = bondData[bondData.length - 1];
-                const prev = bondData[bondData.length - 2];
-                document.getElementById('valBond').textContent = latest.value.toFixed(2) + '%';
-                currentValues.bond = latest.value;
-                showDailyChange('chgBond', latest.value, prev.value, true);
-            } else if (bondData && bondData.length > 0) {
-                document.getElementById('valBond').textContent = bondData[bondData.length - 1].value.toFixed(2) + '%';
+            // VIX
+            if (indicators.vix) {
+                const d = indicators.vix;
+                document.getElementById('valVIX').textContent = d.current.toFixed(1);
+                currentValues.vix = d.current;
+                if (d.change_pct !== null) showDailyChange('chgVIX', d.current, d.previous, true);
             }
 
-            // USD/KRW 환율
-            const fxData = await fetchFRED('DEXKOUS');
-            if (fxData && fxData.length >= 2) {
-                const latest = fxData[fxData.length - 1];
-                const prev = fxData[fxData.length - 2];
-                document.getElementById('valFX').textContent = Math.round(latest.value).toLocaleString();
-                currentValues.fx = latest.value;
-                showDailyChange('chgFX', latest.value, prev.value, true);
-            } else if (fxData && fxData.length > 0) {
-                document.getElementById('valFX').textContent = Math.round(fxData[fxData.length - 1].value).toLocaleString();
+            // 업데이트 시각 표시
+            if (data.updated_at) {
+                const updated = new Date(data.updated_at);
+                document.getElementById('lastUpdate').textContent = updated.toLocaleString('ko-KR') + ' (자동)';
             }
 
-            // S&P500
-            const spData = await fetchFRED('SP500');
-            if (spData && spData.length >= 2) {
-                const latest = spData[spData.length - 1];
-                const prev = spData[spData.length - 2];
-                document.getElementById('valSP').textContent = Math.round(latest.value).toLocaleString();
-                currentValues.sp500 = latest.value;
-                showDailyChange('chgSP', latest.value, prev.value, false);
-            } else if (spData && spData.length > 0) {
-                document.getElementById('valSP').textContent = Math.round(spData[spData.length - 1].value).toLocaleString();
-            }
-
-            // WTI 원유
-            const oilData = await fetchFRED('DCOILWTICO');
-            if (oilData && oilData.length >= 2) {
-                const latest = oilData[oilData.length - 1];
-                const prev = oilData[oilData.length - 2];
-                currentValues.oil = latest.value;
-                showDailyChange('chgOil', latest.value, prev.value, false);
-            }
-
-            // 금
-            const goldData = await fetchFRED('GOLDAMGBD228NLBM');
-            if (goldData && goldData.length >= 2) {
-                const latest = goldData[goldData.length - 1];
-                const prev = goldData[goldData.length - 2];
-                currentValues.gold = latest.value;
-                showDailyChange('chgGold', latest.value, prev.value, false);
-            }
-        } else {
+        } catch(e) {
+            console.warn('data.json 로드 실패, CoinGecko 직접 호출 시도:', e.message);
+            // data.json 없으면 CoinGecko만 직접 호출 (CORS 지원)
+            try {
+                const btcRes = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=2&interval=daily');
+                if (btcRes.ok) {
+                    const btcJson = await btcRes.json();
+                    const prices = btcJson.prices;
+                    if (prices && prices.length >= 2) {
+                        const current = prices[prices.length - 1][1];
+                        const previous = prices[prices.length - 2][1];
+                        document.getElementById('valBTC').textContent = '$' + Math.round(current).toLocaleString();
+                        currentValues.btc = current;
+                        showDailyChange('chgBTC', current, previous, false);
+                        setStatus('statusCoinGecko', 'online');
+                    }
+                }
+            } catch(e2) { /* ignore */ }
             setStatus('statusFRED', 'offline');
-        }
-
-        // CoinGecko BTC
-        const btcData = await fetchBTC();
-        if (btcData && btcData.length >= 2) {
-            const latest = btcData[btcData.length - 1];
-            const prev = btcData[btcData.length - 2];
-            document.getElementById('valBTC').textContent = '$' + Math.round(latest.value).toLocaleString();
-            currentValues.btc = latest.value;
-            showDailyChange('chgBTC', latest.value, prev.value, false);
-        } else if (btcData && btcData.length > 0) {
-            const latest = btcData[btcData.length - 1];
-            document.getElementById('valBTC').textContent = '$' + Math.round(latest.value).toLocaleString();
-        }
-
-        // 한국수출입은행 환율 API (FRED 없을 때 폴백)
-        if (!cfg.fredKey) {
-            try {
-                const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-                const exRes = await fetch(`https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=SAMPLE&searchdate=${today}&data=AP01`);
-                if (exRes.ok) {
-                    const exData = await exRes.json();
-                    const usdKrw = exData.find(item => item.cur_unit === 'USD');
-                    if (usdKrw) {
-                        const rate = parseFloat(usdKrw.deal_bas_r.replace(/,/g, ''));
-                        document.getElementById('valFX').textContent = Math.round(rate).toLocaleString();
-                        currentValues.fx = rate;
-                    }
-                }
-            } catch(e) { /* 폴백 실패 시 기본값 유지 */ }
-        }
-
-        // ECOS (한국은행) - KOSPI 가져오기
-        if (cfg.ecosKey) {
-            try {
-                const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-                const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10).replace(/-/g, '');
-                const ecosUrl = `https://ecos.bok.or.kr/api/StatisticSearch/${cfg.ecosKey}/json/kr/1/5/802Y001/D/${weekAgo}/${today}/0001000`;
-                const ecosRes = await fetchWithCorsProxy(ecosUrl);
-                if (ecosRes) {
-                    const ecosData = await ecosRes.json();
-                    if (ecosData.StatisticSearch && ecosData.StatisticSearch.row && ecosData.StatisticSearch.row.length >= 2) {
-                        const rows = ecosData.StatisticSearch.row;
-                        const latest = parseFloat(rows[rows.length - 1].DATA_VALUE);
-                        const prev = parseFloat(rows[rows.length - 2].DATA_VALUE);
-                        if (latest > 0) {
-                            document.getElementById('valKOSPI').textContent = Math.round(latest).toLocaleString();
-                            currentValues.kospi = latest;
-                            showDailyChange('chgKOSPI', latest, prev, false);
-                        }
-                    } else if (ecosData.StatisticSearch && ecosData.StatisticSearch.row) {
-                        const kospiVal = parseFloat(ecosData.StatisticSearch.row[0].DATA_VALUE);
-                        if (kospiVal > 0) {
-                            document.getElementById('valKOSPI').textContent = Math.round(kospiVal).toLocaleString();
-                            currentValues.kospi = kospiVal;
-                        }
-                    }
-                }
-                setStatus('statusECOS', 'online');
-            } catch(e) {
-                setStatus('statusECOS', 'offline');
-            }
-        } else {
             setStatus('statusECOS', 'offline');
         }
     }
