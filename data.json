@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-24T13:06:20.832454+00:00",
+  "updated_at": "2026-07-24T19:04:17.816553+00:00",
   "indicators": {
     "sp500": {
       "name": "S&P 500",
@@ -98,15 +98,11 @@
       "name": "VIX",
       "source": "FRED",
       "series_id": "VIXCLS",
-      "current": 16.64,
-      "previous": 17.05,
-      "change_pct": -2.4,
-      "date": "2026-07-22",
+      "current": 18.7,
+      "previous": 16.64,
+      "change_pct": 12.38,
+      "date": "2026-07-23",
       "history": [
-        {
-          "date": "2026-07-16",
-          "value": 16.73
-        },
         {
           "date": "2026-07-17",
           "value": 18.77
@@ -122,6 +118,10 @@
         {
           "date": "2026-07-22",
           "value": 16.64
+        },
+        {
+          "date": "2026-07-23",
+          "value": 18.7
         }
       ]
     },
@@ -190,9 +190,9 @@
     "btc": {
       "name": "Bitcoin",
       "source": "CoinGecko",
-      "current": 64660.88827552441,
+      "current": 64198.31887485944,
       "previous": 65052.47667067735,
-      "change_pct": -0.6,
+      "change_pct": -1.31,
       "date": "2026-07-24",
       "history": [
         {
@@ -205,31 +205,31 @@
         },
         {
           "date": "2026-07-24",
-          "value": 64660.88827552441
+          "value": 64198.31887485944
         }
       ]
     },
     "gold": {
       "name": "Gold ($/oz)",
       "source": "CoinGecko",
-      "current": 4049.0,
-      "previous": 4055.9,
-      "change_pct": -0.17,
+      "current": 4050.38,
+      "previous": 4045.12,
+      "change_pct": 0.13,
       "date": "2026-07-24",
       "history": [
         {
           "date": "2026-07-24",
-          "value": 4049.0
+          "value": 4050.38
         }
       ]
     },
     "kospi": {
       "name": "KOSPI",
       "source": "ECOS",
-      "current": 7096.89,
-      "previous": 6797.7,
-      "change_pct": 4.4,
-      "date": "20260723",
+      "current": 6690.62,
+      "previous": 7096.89,
+      "change_pct": -5.72,
+      "date": "20260724",
       "history": [
         {
           "date": "20260714",
@@ -258,6 +258,10 @@
         {
           "date": "20260723",
           "value": 7096.89
+        },
+        {
+          "date": "20260724",
+          "value": 6690.62
         }
       ]
     }
