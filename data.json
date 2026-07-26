@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-26T11:49:37.569745+00:00",
+  "updated_at": "2026-07-26T15:47:37.902604+00:00",
   "indicators": {
     "sp500": {
       "name": "S&P 500",
@@ -190,36 +190,36 @@
     "btc": {
       "name": "Bitcoin",
       "source": "CoinGecko",
-      "current": 64462.60653608674,
-      "previous": 64318.24520120312,
-      "change_pct": 0.22,
+      "current": 64731.07108683008,
+      "previous": 64309.437681613,
+      "change_pct": 0.66,
       "date": "2026-07-26",
       "history": [
         {
           "date": "2026-07-25",
-          "value": 64099.00415642356
+          "value": 64093.19709155083
         },
         {
           "date": "2026-07-26",
-          "value": 64318.24520120312
+          "value": 64309.437681613
         },
         {
           "date": "2026-07-26",
-          "value": 64462.60653608674
+          "value": 64731.07108683008
         }
       ]
     },
     "gold": {
       "name": "Gold ($/oz)",
       "source": "CoinGecko",
-      "current": 4051.42,
-      "previous": 4048.18,
-      "change_pct": 0.08,
+      "current": 4052.21,
+      "previous": 4051.8,
+      "change_pct": 0.01,
       "date": "2026-07-26",
       "history": [
         {
           "date": "2026-07-26",
-          "value": 4051.42
+          "value": 4052.21
         }
       ]
     },
