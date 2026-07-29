@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-29T10:59:06.468019+00:00",
+  "updated_at": "2026-07-29T16:12:26.011502+00:00",
   "indicators": {
     "sp500": {
       "name": "S&P 500",
@@ -98,15 +98,11 @@
       "name": "VIX",
       "source": "FRED",
       "series_id": "VIXCLS",
-      "current": 18.67,
-      "previous": 18.58,
-      "change_pct": 0.48,
-      "date": "2026-07-27",
+      "current": 18.21,
+      "previous": 18.67,
+      "change_pct": -2.46,
+      "date": "2026-07-28",
       "history": [
-        {
-          "date": "2026-07-21",
-          "value": 17.05
-        },
         {
           "date": "2026-07-22",
           "value": 16.64
@@ -122,6 +118,10 @@
         {
           "date": "2026-07-27",
           "value": 18.67
+        },
+        {
+          "date": "2026-07-28",
+          "value": 18.21
         }
       ]
     },
@@ -190,9 +190,9 @@
     "btc": {
       "name": "Bitcoin",
       "source": "CoinGecko",
-      "current": 64389.71376076816,
+      "current": 63917.82248698795,
       "previous": 63881.94327943538,
-      "change_pct": 0.79,
+      "change_pct": 0.06,
       "date": "2026-07-29",
       "history": [
         {
@@ -205,21 +205,21 @@
         },
         {
           "date": "2026-07-29",
-          "value": 64389.71376076816
+          "value": 63917.82248698795
         }
       ]
     },
     "gold": {
       "name": "Gold ($/oz)",
       "source": "CoinGecko",
-      "current": 4016.02,
-      "previous": 4018.43,
-      "change_pct": -0.06,
+      "current": 4004.71,
+      "previous": 4034.16,
+      "change_pct": -0.73,
       "date": "2026-07-29",
       "history": [
         {
           "date": "2026-07-29",
-          "value": 4016.02
+          "value": 4004.71
         }
       ]
     },
