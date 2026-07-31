@@ -1,19 +1,15 @@
 {
-  "updated_at": "2026-07-31T08:10:56.377734+00:00",
+  "updated_at": "2026-07-31T16:16:18.079911+00:00",
   "indicators": {
     "sp500": {
       "name": "S&P 500",
       "source": "FRED",
       "series_id": "SP500",
-      "current": 7316.15,
-      "previous": 7428.78,
-      "change_pct": -1.52,
-      "date": "2026-07-29",
+      "current": 7437.63,
+      "previous": 7316.15,
+      "change_pct": 1.66,
+      "date": "2026-07-30",
       "history": [
-        {
-          "date": "2026-07-23",
-          "value": 7408.3
-        },
         {
           "date": "2026-07-24",
           "value": 7411.98
@@ -29,6 +25,10 @@
         {
           "date": "2026-07-29",
           "value": 7316.15
+        },
+        {
+          "date": "2026-07-30",
+          "value": 7437.63
         }
       ]
     },
@@ -98,15 +98,11 @@
       "name": "VIX",
       "source": "FRED",
       "series_id": "VIXCLS",
-      "current": 20.66,
-      "previous": 18.21,
-      "change_pct": 13.45,
-      "date": "2026-07-29",
+      "current": 17.09,
+      "previous": 20.66,
+      "change_pct": -17.28,
+      "date": "2026-07-30",
       "history": [
-        {
-          "date": "2026-07-23",
-          "value": 18.7
-        },
         {
           "date": "2026-07-24",
           "value": 18.58
@@ -122,6 +118,10 @@
         {
           "date": "2026-07-29",
           "value": 20.66
+        },
+        {
+          "date": "2026-07-30",
+          "value": 17.09
         }
       ]
     },
@@ -190,9 +190,9 @@
     "btc": {
       "name": "Bitcoin",
       "source": "CoinGecko",
-      "current": 63837.71742377282,
+      "current": 62811.46121138669,
       "previous": 63934.10397135411,
-      "change_pct": -0.15,
+      "change_pct": -1.76,
       "date": "2026-07-31",
       "history": [
         {
@@ -201,21 +201,21 @@
         },
         {
           "date": "2026-07-31",
-          "value": 63837.71742377282
+          "value": 62811.46121138669
         }
       ]
     },
     "gold": {
       "name": "Gold ($/oz)",
       "source": "CoinGecko",
-      "current": 4051.45,
-      "previous": 4037.32,
-      "change_pct": 0.35,
+      "current": 4036.25,
+      "previous": 4097.3,
+      "change_pct": -1.49,
       "date": "2026-07-31",
       "history": [
         {
           "date": "2026-07-31",
-          "value": 4051.45
+          "value": 4036.25
         }
       ]
     },
