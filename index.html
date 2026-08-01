@@ -1308,24 +1308,35 @@
     // ============================================
     // 주요국 금 보유량 추이 차트
     // ============================================
-    function createGoldReservesChart() {
-        const years = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+    function createGoldReservesChart(externalData) {
+        const goldData = externalData || {
+            years: ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'],
+            countries: {
+                '미국': [8133.5, 8133.5, 8133.5, 8133.5, 8133.5, 8133.5, 8133.5, 8133.5, 8133.5, 8133.5, 8133.5],
+                '독일': [3377.9, 3373.6, 3369.7, 3364.2, 3362.4, 3359.1, 3355.1, 3352.6, 3351.5, 3351.5, 3351.5],
+                '이탈리아': [2451.8, 2451.8, 2451.8, 2451.8, 2451.8, 2451.8, 2451.8, 2451.8, 2451.8, 2451.8, 2451.8],
+                '프랑스': [2435.9, 2435.9, 2435.9, 2435.9, 2435.9, 2435.9, 2435.9, 2435.8, 2435.8, 2435.8, 2435.8],
+                '중국': [1842.6, 1842.6, 1852.5, 1948.3, 1948.3, 1948.3, 2010.5, 2235.4, 2264.3, 2279.6, 2346.0],
+                '러시아': [1615.2, 1838.2, 2111.9, 2271.2, 2298.5, 2301.6, 2332.7, 2332.7, 2340.0, 2350.0, 2360.0],
+                '인도': [557.8, 560.3, 607.0, 668.2, 703.7, 760.4, 787.4, 803.6, 854.7, 876.2, 912.8],
+                '한국': [104.4, 104.4, 104.4, 104.4, 104.4, 104.4, 104.4, 104.4, 104.4, 104.4, 104.4]
+            }
+        };
+        const years = goldData.years;
+        const colors = ['#1e293b','#ef4444','#10b981','#3b82f6','#f59e0b','#8b5cf6','#ec4899','#06b6d4'];
+        const countryNames = Object.keys(goldData.countries);
+        const datasets = countryNames.map((name, i) => ({
+            label: name,
+            data: goldData.countries[name],
+            borderColor: colors[i % colors.length],
+            backgroundColor: colors[i % colors.length] + '20',
+            borderWidth: 2, fill: false,
+            tension: 0.3, pointRadius: 3
+        }));
         const ctx = document.getElementById('chartGoldReserves').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: years,
-                datasets: [
-                    { label: '미국', data: [8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134], borderColor: '#1e293b', backgroundColor: '#1e293b20', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
-                    { label: '독일', data: [3378, 3374, 3370, 3366, 3362, 3359, 3355, 3353, 3352, 3352, 3352], borderColor: '#ef4444', backgroundColor: '#ef444420', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
-                    { label: '이탈리아', data: [2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452], borderColor: '#10b981', backgroundColor: '#10b98120', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
-                    { label: '프랑스', data: [2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436], borderColor: '#3b82f6', backgroundColor: '#3b82f620', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
-                    { label: '중국', data: [1842, 1843, 1853, 1948, 1948, 1948, 1980, 2235, 2264, 2280, 2300], borderColor: '#f59e0b', backgroundColor: '#f59e0b20', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
-                    { label: '러시아', data: [1615, 1838, 2112, 2271, 2299, 2302, 2330, 2333, 2340, 2350, 2360], borderColor: '#8b5cf6', backgroundColor: '#8b5cf620', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
-                    { label: '인도', data: [557, 560, 607, 668, 700, 760, 787, 803, 854, 880, 910], borderColor: '#ec4899', backgroundColor: '#ec489920', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
-                    { label: '한국', data: [104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104], borderColor: '#06b6d4', backgroundColor: '#06b6d420', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 }
-                ]
-            },
+            data: { labels: years, datasets: datasets },
             options: {
                 responsive: true, maintainAspectRatio: false,
                 interaction: { intersect: false, mode: 'index' },
@@ -1574,8 +1585,8 @@
         // IMF/WEF 뉴스 로드
         loadIMFWEFNews();
 
-        // API 데이터 시도
-        loadAPIData();
+        // API 데이터 시도 (data.json 우선, 실패시 직접 API)
+        loadDataJSON();
 
         // 자동 피드 시작
         if (autoFeedEnabled) startAutoFeed();
@@ -1608,6 +1619,109 @@
         document.getElementById('chgM2').textContent = '--';
         document.getElementById('valVIX').textContent = '18.7';
         document.getElementById('chgVIX').textContent = '--';
+    }
+
+    // ============================================
+    // data.json 로드 (fetch_data.py가 생성)
+    // ============================================
+    async function loadDataJSON() {
+        try {
+            const res = await fetch('data.json?t=' + Date.now());
+            if (!res.ok) throw new Error('data.json not found');
+            const data = await res.json();
+            console.log('data.json loaded:', data.lastUpdated);
+
+            // 시장 데이터 카드 업데이트
+            if (data.market?.btc) {
+                document.getElementById('valBTC').textContent = '$' + Math.round(data.market.btc.price).toLocaleString();
+                const cls = data.market.btc.change24h >= 0 ? 'positive' : 'negative';
+                document.getElementById('valBTC').className = 'value ' + cls;
+                document.getElementById('chgBTC').textContent = (data.market.btc.change24h >= 0 ? '+' : '') + data.market.btc.change24h.toFixed(1) + '%';
+                document.getElementById('chgBTC').className = 'change ' + cls;
+                setStatus('statusCoinGecko', 'online');
+            }
+            if (data.market?.kospi) {
+                document.getElementById('valKOSPI').textContent = data.market.kospi.value.toFixed(2);
+                const cls = data.market.kospi.change >= 0 ? 'positive' : 'negative';
+                document.getElementById('valKOSPI').className = 'value ' + cls;
+                document.getElementById('chgKOSPI').textContent = (data.market.kospi.changeRate >= 0 ? '+' : '') + data.market.kospi.changeRate.toFixed(2) + '%';
+                document.getElementById('chgKOSPI').className = 'change ' + cls;
+                setStatus('statusNaver', 'online');
+            }
+            if (data.market?.usdkrw) {
+                document.getElementById('valFX').textContent = data.market.usdkrw.value.toFixed(2);
+                const cls = data.market.usdkrw.change <= 0 ? 'positive' : 'negative';
+                document.getElementById('valFX').className = 'value ' + cls;
+                document.getElementById('chgFX').textContent = (data.market.usdkrw.changeRate >= 0 ? '+' : '') + data.market.usdkrw.changeRate.toFixed(2) + '%';
+                document.getElementById('chgFX').className = 'change ' + cls;
+            }
+
+            // FRED 데이터
+            if (data.fred?.vix?.length) {
+                const latest = data.fred.vix[data.fred.vix.length - 1];
+                document.getElementById('valVIX').textContent = latest.value.toFixed(1);
+                setStatus('statusFRED', 'online');
+            }
+            if (data.fred?.m2?.length) {
+                const latest = data.fred.m2[data.fred.m2.length - 1];
+                document.getElementById('valM2').textContent = '$' + (latest.value / 1000).toFixed(1) + 'T';
+            }
+            if (data.fred?.bond10y?.length) {
+                const latest = data.fred.bond10y[data.fred.bond10y.length - 1];
+                document.getElementById('valBond').textContent = latest.value.toFixed(2) + '%';
+            }
+            if (data.fred?.sp500?.length) {
+                const latest = data.fred.sp500[data.fred.sp500.length - 1];
+                document.getElementById('valSP').textContent = Math.round(latest.value).toLocaleString();
+            }
+
+            // 뉴스 피드
+            if (data.news?.length) {
+                const feedEl = document.getElementById('feedItems');
+                feedEl.innerHTML = data.news.map(item => {
+                    let dateStr = '';
+                    if (item.pubDate) {
+                        const d = new Date(item.pubDate);
+                        dateStr = d.toLocaleDateString('ko-KR', {month:'2-digit',day:'2-digit'}) + ' ' + d.toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'});
+                    }
+                    const titleHtml = item.link ? `<a href="${item.link}" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;border-bottom:1px dotted #94a3b8;">${item.title}</a>` : item.title;
+                    return `<div class="feed-item"><span class="time">${dateStr}</span><span class="title">${titleHtml}</span><span class="source">${item.source}</span></div>`;
+                }).join('');
+                setStatus('statusNews', 'online');
+
+                // 자동 인사이트 생성
+                const topNews = data.news.slice(0, 5).map(n => n.title).join(' ');
+                const result = calculateImpact(topNews);
+                if (result.rules.length > 0) {
+                    updateRiskScore(result);
+                    generateInsight(data.news, result);
+                }
+            }
+
+            // IMF 뉴스
+            if (data.imfNews?.length) {
+                const el = document.getElementById('imfWefItems');
+                el.innerHTML = data.imfNews.map(item => {
+                    let dateStr = '';
+                    if (item.pubDate) { const d = new Date(item.pubDate); dateStr = d.toLocaleDateString('ko-KR', {month:'2-digit',day:'2-digit'}); }
+                    const titleHtml = item.link ? `<a href="${item.link}" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;border-bottom:1px dotted #94a3b8;">${item.title}</a>` : item.title;
+                    return `<div class="feed-item"><span class="time">${dateStr}</span><span class="title">${titleHtml}</span><span class="source" style="background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:4px;font-weight:600;">${item.source}</span></div>`;
+                }).join('');
+            }
+
+            // 금 보유량 차트 (실제 데이터 재생성)
+            if (data.goldReserves) {
+                if (charts['chartGoldReserves']) charts['chartGoldReserves'].destroy();
+                createGoldReservesChart(data.goldReserves);
+            }
+
+            // 타임스탬프
+            document.getElementById('lastUpdate').textContent = new Date(data.lastUpdated).toLocaleString('ko-KR');
+
+        } catch(e) {
+            console.log('data.json 로드 실패, 직접 API 호출로 폴백:', e.message);
+            await loadAPIData();
+        }
     }
 
     async function loadAPIData() {
