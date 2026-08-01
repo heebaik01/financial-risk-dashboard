@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-08-01T15:26:59.930324+00:00",
+  "lastUpdated": "2026-08-01T15:43:00.693776+00:00",
   "market": {
     "btc": {
-      "price": 63011,
-      "change24h": 0.9025980673016798
+      "price": 63000,
+      "change24h": 0.5148496124581762
     },
     "btcHistory": [
       {
@@ -368,7 +368,7 @@
       },
       {
         "date": "2026-08-01",
-        "value": 63018.02633773697
+        "value": 63004.47505264108
       }
     ]
   },
@@ -398,10 +398,10 @@
       "source": "프라임경제"
     },
     {
-      "title": "구윤철 “실물경제 견조…중동전쟁·금융시장 변동성 적기 대응” - dailian.co.kr",
+      "title": "구윤철 “실물경제 견조…중동전쟁·금융시장 변동성 적기 대응” - 데일리안",
       "link": "https://news.google.com/rss/articles/CBMiuAJBVV95cUxNX3BacEVlRHBkRjYwY0dsemdVNE4zWUM5MDlqc2xEV0paSTJXWWhhaDI2bEFiVXF3ekRIRWJvXzc1b2dtR0w1ZnQ2VzE2eGx5c0RhbFR6d0tYd3RxZ3hQOHNxWTk1dExGYnJ0YzgzZzhNUEFjZjB0NV9oeUVibTBNNVk4cWFCV0o0RWk3ZHFkSVkwTDE2RGhEcS1lYkx1ZHlQNDhSZ0VnSjk1bnNGYzZiSXN0eDNISE1hOGhQYUNLRDdIcmh0dl81Y1pPVEZNSTJELW1kcjQyWmtMTDZWWlNNcG45cVdLZjU2dlNCb01INDdpcndNRkp6OVVnVWtXaTlscndscTJSa3YyNEdva29YZUwtOUlIenV2MmVNblRyVjg2eWlTbmFGZFdYQzRURE1oTFZHRHJEdnM?oc=5",
       "pubDate": "Thu, 30 Jul 2026 23:34:00 GMT",
-      "source": "dailian.co.kr"
+      "source": "데일리안"
     },
     {
       "title": "美 정책금리 동결에…정부 \"금융시장 변동성 면밀 대응\" - 네이트",
