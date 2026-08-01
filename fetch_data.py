@@ -10,6 +10,9 @@ from datetime import datetime, timezone
 
 DATA_FILE = "data.json"
 FRED_KEY = os.environ.get("FRED_API_KEY", "")
+ECOS_KEY = os.environ.get("ECOS_API_KEY", "")
+KRX_KEY = os.environ.get("KRX_API_KEY", "")
+OPENDART_KEY = os.environ.get("OPENDART_API_KEY", "")
 
 
 def fetch_json(url, timeout=15):
@@ -88,6 +91,115 @@ def fetch_naver_fx():
         except (ValueError, TypeError):
             pass
     return None
+
+
+def fetch_krx_market():
+    """KRX Open API에서 KOSPI/KOSDAQ 시장 개요를 가져옵니다."""
+    if not KRX_KEY:
+        print("  [SKIP] KRX key not set")
+        return None
+    # KRX 전체 시장 지수 (KOSPI)
+    today = datetime.now().strftime("%Y%m%d")
+    url = (
+        f"http://data-dbg.krx.co.kr/svc/apis/idx/kospi_dd_trd"
+        f"?basDd={today}&AUTH_KEY={KRX_KEY}"
+    )
+    data = fetch_json(url)
+    if data and "output" in data and len(data["output"]) > 0:
+        items = data["output"]
+        # KOSPI 지수 찾기
+        kospi = None
+        for item in items:
+            if item.get("IDX_NM") == "코스피" or item.get("IDX_CLSS") == "01":
+                kospi = item
+                break
+        if kospi:
+            return {
+                "kospi": {
+                    "value": float(kospi.get("CLSPRC_IDX", 0)),
+                    "change": float(kospi.get("PRV_DD_CMPR", 0)),
+                    "volume": kospi.get("ACC_TRDVOL", ""),
+                    "tradingValue": kospi.get("ACC_TRDVAL", "")
+                },
+                "items": items[:10]  # 상위 10개 지수
+            }
+    return None
+
+
+def fetch_krx_foreign():
+    """KRX에서 외국인 매매 동향을 가져옵니다."""
+    if not KRX_KEY:
+        return None
+    today = datetime.now().strftime("%Y%m%d")
+    url = (
+        f"http://data-dbg.krx.co.kr/svc/apis/idx/kospi_dd_trd"
+        f"?basDd={today}&AUTH_KEY={KRX_KEY}"
+    )
+    # 외국인 순매수 데이터
+    data = fetch_json(url)
+    if data and "output" in data:
+        return data["output"][:5]
+    return None
+
+
+def fetch_opendart_disclosures():
+    """OpenDART에서 최근 주요 공시를 가져옵니다."""
+    if not OPENDART_KEY:
+        print("  [SKIP] OpenDART key not set")
+        return []
+    # 최근 7일 주요사항보고
+    from datetime import timedelta
+    end_date = datetime.now().strftime("%Y%m%d")
+    start_date = (datetime.now() - timedelta(days=7)).strftime("%Y%m%d")
+    url = (
+        f"https://opendart.fss.or.kr/api/list.json"
+        f"?crtfc_key={OPENDART_KEY}"
+        f"&bgn_de={start_date}&end_de={end_date}"
+        f"&pblntf_ty=B"  # B: 주요사항보고
+        f"&page_count=10"
+    )
+    data = fetch_json(url)
+    if data and data.get("status") == "000" and data.get("list"):
+        return [
+            {
+                "company": item.get("corp_name", ""),
+                "title": item.get("report_nm", ""),
+                "date": item.get("rcept_dt", ""),
+                "link": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={item.get('rcept_no', '')}"
+            }
+            for item in data["list"][:10]
+        ]
+    return []
+
+
+def fetch_opendart_major_corps():
+    """OpenDART에서 주요 대기업 최근 공시를 가져옵니다."""
+    if not OPENDART_KEY:
+        return []
+    from datetime import timedelta
+    end_date = datetime.now().strftime("%Y%m%d")
+    start_date = (datetime.now() - timedelta(days=14)).strftime("%Y%m%d")
+    # 주요 상장사 (삼성전자, SK하이닉스, 현대차 등)
+    url = (
+        f"https://opendart.fss.or.kr/api/list.json"
+        f"?crtfc_key={OPENDART_KEY}"
+        f"&bgn_de={start_date}&end_de={end_date}"
+        f"&pblntf_ty=A"  # A: 정기공시
+        f"&corp_cls=Y"   # Y: 유가증권시장
+        f"&page_count=10"
+    )
+    data = fetch_json(url)
+    if data and data.get("status") == "000" and data.get("list"):
+        return [
+            {
+                "company": item.get("corp_name", ""),
+                "title": item.get("report_nm", ""),
+                "date": item.get("rcept_dt", ""),
+                "link": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={item.get('rcept_no', '')}"
+            }
+            for item in data["list"][:10]
+        ]
+    return []
 
 
 def fetch_news_rss():
@@ -247,6 +359,23 @@ def main():
     print("  Fetching IMF News...")
     result["imfNews"] = fetch_imf_news()
     print(f"    -> {len(result['imfNews'])} articles")
+
+    # KRX
+    print("  Fetching KRX market data...")
+    krx_data = fetch_krx_market()
+    if krx_data:
+        result["krx"] = krx_data
+        print(f"    -> KOSPI: {krx_data.get('kospi', {}).get('value', 'N/A')}")
+
+    # OpenDART
+    print("  Fetching OpenDART disclosures...")
+    dart_major = fetch_opendart_disclosures()
+    dart_corps = fetch_opendart_major_corps()
+    result["dart"] = {
+        "majorEvents": dart_major,
+        "regularReports": dart_corps
+    }
+    print(f"    -> {len(dart_major)} major events, {len(dart_corps)} regular reports")
 
     # 저장
     with open(DATA_FILE, "w", encoding="utf-8") as f:
