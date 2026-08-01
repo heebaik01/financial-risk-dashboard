@@ -43,12 +43,16 @@ def fetch_fred_series(series_id, limit=120):
     return None
 
 
-def fetch_coingecko_btc():
-    """CoinGecko에서 BTC 가격을 가져옵니다."""
-    url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true"
+def fetch_btc_history():
+    """Binance 공개 API에서 BTC 월별 히스토리 (키 불필요, 약 109개월)."""
+    url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1M&limit=130"
     data = fetch_json(url)
-    if data and "bitcoin" in data:
-        return {"price": data["bitcoin"]["usd"], "change24h": data["bitcoin"].get("usd_24h_change", 0)}
+    if isinstance(data, list) and data:
+        out = []
+        for k in data:
+            ym = datetime.fromtimestamp(k[0] / 1000, tz=timezone.utc).strftime("%Y-%m")
+            out.append({"date": ym, "value": float(k[4])})
+        return out
     return None
 
 
@@ -306,6 +310,7 @@ def main():
     result = {
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
         "market": {},
+        "history": {},
         "news": [],
         "imfNews": [],
         "goldReserves": get_gold_reserves_data(),
@@ -321,7 +326,7 @@ def main():
         "bond10y": "DGS10",
         "sp500": "SP500",
         "oil": "DCOILWTICO",
-        "gold": "GOLDAMGBD228NLBM",
+        "gold": "GOLDPMGBD228NLBM",
         "usdkrw": "DEXKOUS"
     }
     for key, sid in fred_series.items():
@@ -329,6 +334,7 @@ def main():
         data = fetch_fred_series(sid)
         if data:
             result["fred"][key] = data
+            result["history"][key] = data
             print(f"    -> {len(data)} observations")
 
     # CoinGecko
@@ -336,20 +342,17 @@ def main():
     btc = fetch_coingecko_btc()
     if btc:
         result["market"]["btc"] = btc
-    btc_hist = fetch_coingecko_btc_history()
+        print("  Fetching BTC history (Binance)...")
+    btc_hist = fetch_btc_history()
     if btc_hist:
-        result["market"]["btcHistory"] = btc_hist
+        result["history"]["btc"] = btc_hist
+        print(f"    -> {len(btc_hist)} months ({btc_hist[0]['date']} ~ {btc_hist[-1]['date']})")
 
     # 네이버 금융
     print("  Fetching Naver KOSPI...")
     kospi = fetch_naver_kospi()
     if kospi:
         result["market"]["kospi"] = kospi
-
-    print("  Fetching Naver USD/KRW...")
-    fx = fetch_naver_fx()
-    if fx:
-        result["market"]["usdkrw"] = fx
 
     # 뉴스
     print("  Fetching News RSS...")
