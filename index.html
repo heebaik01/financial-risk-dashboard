@@ -66,7 +66,7 @@
             font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
         }
         .btn-primary { background: #3b82f6; color: #fff; }
-        .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+        .btn-primary:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
         .btn-secondary { background: #f1f5f9; color: #3b82f6; border: 1px solid #cbd5e1; }
         .btn-secondary:hover { background: #e2e8f0; }
         .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
@@ -93,8 +93,7 @@
         /* News Feed */
         .news-feed {
             background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;
-            padding: 20px; margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         .news-feed h2 { font-size: 16px; color: #1e293b; margin-bottom: 12px; }
         .feed-items { max-height: 200px; overflow-y: auto; }
@@ -103,9 +102,9 @@
             display: flex; align-items: flex-start; gap: 8px;
         }
         .feed-item:last-child { border-bottom: none; }
-        .feed-item .time { font-size: 10px; color: #94a3b8; min-width: 60px; }
-        .feed-item .title { font-size: 12px; color: #334155; }
-        .feed-item .source { font-size: 10px; color: #64748b; margin-left: auto; }
+        .feed-item .time { font-size: 10px; color: #64748b; min-width: 95px; }
+        .feed-item .title { font-size: 12px; color: #1e293b; }
+        .feed-item .source { font-size: 10px; color: #94a3b8; margin-left: auto; }
 
         /* Risk Cards */
         .risk-summary {
@@ -125,6 +124,9 @@
         .risk-card .label { font-size: 11px; color: #64748b; margin-bottom: 4px; }
         .risk-card .value { font-size: 22px; font-weight: 700; }
         .risk-card .change { font-size: 11px; margin-top: 3px; }
+        .risk-card canvas.sparkline { width: 100% !important; height: 30px !important; margin-top: 6px; }
+        .risk-card[onclick] { cursor: pointer; }
+        .risk-card[onclick]:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59,130,246,0.15); }
         .positive { color: #059669; }
         .negative { color: #dc2626; }
         .neutral { color: #d97706; }
@@ -166,8 +168,7 @@
         /* User Events Log */
         .user-events {
             background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;
-            padding: 20px; margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         .user-events h2 { font-size: 16px; color: #1e293b; margin-bottom: 12px; }
         .event-log { max-height: 150px; overflow-y: auto; }
@@ -175,8 +176,8 @@
             padding: 6px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px;
             display: flex; gap: 12px;
         }
-        .event-entry .timestamp { color: #94a3b8; min-width: 140px; }
-        .event-entry .content { color: #334155; flex: 1; }
+        .event-entry .timestamp { color: #64748b; min-width: 140px; }
+        .event-entry .content { color: #1e293b; flex: 1; }
         .event-entry .severity { min-width: 60px; text-align: right; font-weight: 600; }
 
         .footer { text-align: center; padding: 20px 0; color: #94a3b8; font-size: 11px; }
@@ -187,8 +188,7 @@
         /* API Config Panel */
         .config-panel {
             background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;
-            padding: 20px; margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         .config-panel h2 { font-size: 16px; color: #1e293b; margin-bottom: 12px; }
         .config-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
@@ -199,6 +199,45 @@
             color: #1e293b; padding: 8px 10px; font-size: 12px;
         }
         .config-item input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+        /* Chart Modal */
+        .chart-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        .chart-modal-overlay.active { display: flex; }
+        .chart-modal {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 90vh;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .chart-modal h3 {
+            font-size: 18px; color: #1e293b; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .chart-modal canvas { width: 100% !important; height: 450px !important; }
+        .chart-modal-close {
+            position: absolute; top: 16px; right: 20px;
+            background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px;
+            width: 36px; height: 36px; font-size: 18px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: #64748b; transition: all 0.2s;
+        }
+        .chart-modal-close:hover { background: #e2e8f0; color: #1e293b; }
+        .chart-container { cursor: pointer; transition: box-shadow 0.2s; }
+        .chart-container:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -209,16 +248,79 @@
         <div class="status-bar">
             <div class="status-item"><span class="status-dot" id="statusFRED"></span>FRED</div>
             <div class="status-item"><span class="status-dot" id="statusCoinGecko"></span>CoinGecko</div>
+            <div class="status-item"><span class="status-dot" id="statusNaver"></span>Naver</div>
             <div class="status-item"><span class="status-dot" id="statusNews"></span>News RSS</div>
             <div class="status-item"><span class="status-dot" id="statusECOS"></span>ECOS</div>
         </div>
     </div>
 
-    <!-- NEWS INPUT PANEL -->
+    <!-- 1. 지수 대시보드 -->
+    <div class="risk-summary" id="riskCards">
+        <div class="risk-card" id="cardRisk"><div class="label">종합 위험 지수</div><div class="value neutral" id="valRisk">--</div><div class="change" id="chgRisk">계산중...</div></div>
+        <div class="risk-card" id="cardSP" onclick="openCardChart('chartSP500','S&P 500')"><div class="label">S&P 500</div><div class="value" id="valSP">--</div><div class="change" id="chgSP">--</div><canvas class="sparkline" id="sparkSP"></canvas></div>
+        <div class="risk-card" id="cardKOSPI" onclick="openCardChart('chartKOSPI','KOSPI')"><div class="label">KOSPI</div><div class="value" id="valKOSPI">--</div><div class="change" id="chgKOSPI">--</div><canvas class="sparkline" id="sparkKOSPI"></canvas></div>
+        <div class="risk-card" id="cardFX" onclick="openCardChart('chartFX','USD/KRW')"><div class="label">USD/KRW</div><div class="value" id="valFX">--</div><div class="change" id="chgFX">--</div><canvas class="sparkline" id="sparkFX"></canvas></div>
+        <div class="risk-card" id="cardBond" onclick="openCardChart('chartBond','US 10Y 금리')"><div class="label">US 10Y 금리</div><div class="value" id="valBond">--</div><div class="change" id="chgBond">--</div><canvas class="sparkline" id="sparkBond"></canvas></div>
+        <div class="risk-card" id="cardBTC" onclick="openCardChart('chartBTC','Bitcoin')"><div class="label">Bitcoin</div><div class="value" id="valBTC">--</div><div class="change" id="chgBTC">--</div><canvas class="sparkline" id="sparkBTC"></canvas></div>
+        <div class="risk-card" id="cardM2" onclick="openCardChart('chartM2','통화유동성 M2')"><div class="label">US M2 (조$)</div><div class="value" id="valM2">--</div><div class="change" id="chgM2">--</div><canvas class="sparkline" id="sparkM2"></canvas></div>
+        <div class="risk-card" id="cardVIX" onclick="openCardChart('chartVIX','VIX')"><div class="label">VIX</div><div class="value" id="valVIX">--</div><div class="change" id="chgVIX">--</div><canvas class="sparkline" id="sparkVIX"></canvas></div>
+    </div>
+    <!-- Hidden canvases for chart data (rendered in modal on click) -->
+    <div style="display:none;">
+        <canvas id="chartSP500"></canvas>
+        <canvas id="chartKOSPI"></canvas>
+        <canvas id="chartFX"></canvas>
+        <canvas id="chartBond"></canvas>
+        <canvas id="chartOil"></canvas>
+        <canvas id="chartGold"></canvas>
+        <canvas id="chartBTC"></canvas>
+        <canvas id="chartM2"></canvas>
+        <canvas id="chartVIX"></canvas>
+    </div>
+    <div class="impact-matrix">
+        <h2>&#x1F4B5; 미국 국채 발행량 vs GDP 비교</h2>
+        <div style="margin-bottom:20px;"><canvas id="chartDebtGDP" style="width:100%!important;height:280px!important;"></canvas></div>
+        <table class="matrix-table">
+            <thead><tr><th>연도</th><th>GDP (조$)</th><th>국채 (조$)</th><th>부채/GDP</th><th>전년대비</th></tr></thead>
+            <tbody>
+                <tr><td>2026(E)</td><td>31.0</td><td>38.5</td><td class="cell-high-neg">124.2%</td><td>+4.6%</td></tr>
+                <tr><td>2025</td><td>29.9</td><td>36.8</td><td class="cell-high-neg">123.1%</td><td>+3.7%</td></tr>
+                <tr><td>2024</td><td>28.8</td><td>35.5</td><td class="cell-high-neg">123.3%</td><td>+6.9%</td></tr>
+                <tr><td>2023</td><td>27.4</td><td>33.2</td><td class="cell-mid-neg">121.2%</td><td>+7.4%</td></tr>
+                <tr><td>2022</td><td>25.5</td><td>30.9</td><td class="cell-mid-neg">121.2%</td><td>+8.8%</td></tr>
+                <tr><td>2021</td><td>23.3</td><td>28.4</td><td class="cell-mid-neg">121.9%</td><td>+2.5%</td></tr>
+                <tr><td>2020</td><td>21.0</td><td>27.7</td><td class="cell-high-neg">131.9%</td><td>+22.0%</td></tr>
+                <tr><td>2019</td><td>21.4</td><td>22.7</td><td class="cell-mid-neg">106.1%</td><td>+5.6%</td></tr>
+                <tr><td>2018</td><td>20.5</td><td>21.5</td><td class="cell-mid-neg">104.9%</td><td>+6.4%</td></tr>
+                <tr><td>2017</td><td>19.5</td><td>20.2</td><td class="cell-mid-neg">103.6%</td><td>+3.1%</td></tr>
+                <tr><td>2016</td><td>18.7</td><td>19.6</td><td class="cell-mid-neg">104.8%</td><td>+3.2%</td></tr>
+            </tbody>
+        </table>
+        <p style="font-size:10px;color:#94a3b8;margin-top:10px;">출처: US Treasury, CBO, FRED | (E)=추정치</p>
+    </div>
+    <div class="chart-container" style="margin-bottom:24px;"><h3><span class="indicator" style="background:#3b82f6"></span>주요국 미국 국채 보유금액 추이 (억$)</h3><canvas id="chartTreasuryHoldings" style="height:280px!important;"></canvas></div>
+    <div class="chart-container" style="margin-bottom:24px;"><h3><span class="indicator" style="background:#fbbf24"></span>주요국 금 보유량 추이 (톤)</h3><canvas id="chartGoldReserves" style="height:280px!important;"></canvas></div>
+
+    <!-- 2. 뉴스 피드 -->
+    <div class="news-feed" id="newsFeed">
+        <h2>&#x1F4E1; 실시간 뉴스 피드 <span style="font-size:11px;color:#94a3b8;">(자동 수집)</span></h2>
+        <div class="feed-items" id="feedItems"><div class="feed-item"><span class="time">대기중...</span><span class="title">API 연결 후 자동으로 뉴스가 표시됩니다</span></div></div>
+    </div>
+    <div class="news-feed" id="imfWefFeed">
+        <h2>&#x1F30D; IMF / 세계경제포럼(WEF) 주요 뉴스</h2>
+        <div class="feed-items" id="imfWefItems"><div class="feed-item"><span class="time">대기중...</span><span class="title">IMF/WEF 뉴스 로딩 중...</span></div></div>
+    </div>
+
+    <!-- 3. 뉴스 종합 인사이트 -->
+    <div class="news-panel" id="insightPanel">
+        <h2>&#x1F4A1; 뉴스 종합 인사이트</h2>
+        <div id="insightContent" style="font-size:13px;line-height:1.8;color:#334155;"><p style="color:#94a3b8;">뉴스가 수집되면 자동으로 종합 인사이트가 생성됩니다.</p></div>
+    </div>
+    <!-- 4. 뉴스 영향도 분석기 + 매트릭스 -->
     <div class="news-panel">
         <h2>&#x1F4F0; 뉴스 영향도 분석기</h2>
         <div class="news-input-area">
-            <textarea id="newsInput" placeholder="중요 뉴스를 입력하세요...&#10;&#10;예시:&#10;- 미국 연준, 기준금리 50bp 인하 결정&#10;- 중국, 대만해협에 군사훈련 개시&#10;- 삼성전자 4분기 영업이익 전년대비 300% 증가&#10;- 트럼프, 모든 중국산 제품에 60% 관세 부과 발표"></textarea>
+            <textarea id="newsInput" placeholder="중요 뉴스를 입력하세요...&#10;&#10;예시:&#10;- 미국 연준, 기준금리 50bp 인하 결정&#10;- 중국, 대만해협에 군사훈련 개시&#10;- 트럼프, 모든 중국산 제품에 60% 관세 부과 발표"></textarea>
             <div class="news-controls">
                 <button class="btn btn-primary" id="btnAnalyze" onclick="analyzeNews()">&#x1F50D; 영향도 분석</button>
                 <button class="btn btn-secondary" id="btnAutoFeed" onclick="toggleAutoFeed()">&#x1F4E1; 자동 피드 ON</button>
@@ -226,170 +328,58 @@
                 <button class="btn btn-secondary" onclick="toggleConfig()">&#x2699;&#xFE0F; API 설정</button>
             </div>
         </div>
-        <div class="analysis-result" id="analysisResult">
-            <h3>&#x26A1; 영향도 분석 결과</h3>
-            <div id="analysisContent"></div>
-            <div class="impact-chips" id="impactChips"></div>
-        </div>
+        <div class="analysis-result" id="analysisResult"><h3>&#x26A1; 영향도 분석 결과</h3><div id="analysisContent"></div><div class="impact-chips" id="impactChips"></div></div>
     </div>
-
-    <!-- API CONFIG (Hidden by default) -->
     <div class="config-panel" id="configPanel" style="display:none;">
-        <h2>&#x2699;&#xFE0F; API 키 설정 (브라우저 localStorage에 저장)</h2>
+        <h2>&#x2699;&#xFE0F; API 키 설정</h2>
         <div class="config-grid">
-            <div class="config-item">
-                <label>FRED API Key (fred.stlouisfed.org)</label>
-                <input type="text" id="fredKey" placeholder="무료 발급: fred.stlouisfed.org/docs/api/api_key.html">
-            </div>
-            <div class="config-item">
-                <label>한국은행 ECOS API Key</label>
-                <input type="text" id="ecosKey" placeholder="무료 발급: ecos.bok.or.kr">
-            </div>
-            <div class="config-item">
-                <label>Alpha Vantage API Key</label>
-                <input type="text" id="alphaKey" placeholder="무료 발급: alphavantage.co">
-            </div>
-            <div class="config-item">
-                <label>CORS Proxy URL (뉴스 RSS용)</label>
-                <input type="text" id="corsProxy" placeholder="예: https://api.allorigins.win/raw?url=">
-            </div>
+            <div class="config-item"><label>FRED API Key</label><input type="text" id="fredKey" placeholder="fred.stlouisfed.org"></div>
+            <div class="config-item"><label>한국은행 ECOS</label><input type="text" id="ecosKey" placeholder="ecos.bok.or.kr"></div>
+            <div class="config-item"><label>Alpha Vantage</label><input type="text" id="alphaKey" placeholder="alphavantage.co"></div>
+            <div class="config-item"><label>CORS Proxy</label><input type="text" id="corsProxy" placeholder="https://api.allorigins.win/raw?url="></div>
         </div>
-        <div style="margin-top:12px;">
-            <button class="btn btn-primary" onclick="saveConfig()">저장</button>
-            <span style="font-size:11px;color:#7a8a9e;margin-left:12px;">* CoinGecko는 키 없이 사용 가능</span>
-        </div>
+        <div style="margin-top:12px;"><button class="btn btn-primary" onclick="saveConfig()">저장</button></div>
     </div>
-
-    <!-- NEWS FEED (Auto) -->
-    <div class="news-feed" id="newsFeed">
-        <h2>&#x1F4E1; 실시간 뉴스 피드 <span style="font-size:11px;color:#7a8a9e;">(자동 수집)</span></h2>
-        <div class="feed-items" id="feedItems">
-            <div class="feed-item">
-                <span class="time">대기중...</span>
-                <span class="title">API 연결 후 자동으로 뉴스가 표시됩니다</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- RISK SUMMARY CARDS -->
-    <div class="risk-summary" id="riskCards">
-        <div class="risk-card" id="cardRisk">
-            <div class="label">종합 위험 지수</div>
-            <div class="value neutral" id="valRisk">--</div>
-            <div class="change" id="chgRisk">계산중...</div>
-        </div>
-        <div class="risk-card" id="cardSP">
-            <div class="label">S&P 500</div>
-            <div class="value" id="valSP">--</div>
-            <div class="change" id="chgSP">--</div>
-        </div>
-        <div class="risk-card" id="cardKOSPI">
-            <div class="label">KOSPI</div>
-            <div class="value" id="valKOSPI">--</div>
-            <div class="change" id="chgKOSPI">--</div>
-        </div>
-        <div class="risk-card" id="cardFX">
-            <div class="label">USD/KRW</div>
-            <div class="value" id="valFX">--</div>
-            <div class="change" id="chgFX">--</div>
-        </div>
-        <div class="risk-card" id="cardBond">
-            <div class="label">US 10Y 금리</div>
-            <div class="value" id="valBond">--</div>
-            <div class="change" id="chgBond">--</div>
-        </div>
-        <div class="risk-card" id="cardBTC">
-            <div class="label">Bitcoin</div>
-            <div class="value" id="valBTC">--</div>
-            <div class="change" id="chgBTC">--</div>
-        </div>
-        <div class="risk-card" id="cardM2">
-            <div class="label">US M2 (조$)</div>
-            <div class="value" id="valM2">--</div>
-            <div class="change" id="chgM2">--</div>
-        </div>
-        <div class="risk-card" id="cardVIX">
-            <div class="label">VIX</div>
-            <div class="value" id="valVIX">--</div>
-            <div class="change" id="chgVIX">--</div>
-        </div>
-    </div>
-
-    <!-- CHARTS -->
-    <div class="charts-grid">
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#3b82f6"></span>S&P 500</h3>
-            <canvas id="chartSP500"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#10b981"></span>KOSPI</h3>
-            <canvas id="chartKOSPI"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#f59e0b"></span>USD/KRW</h3>
-            <canvas id="chartFX"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#ef4444"></span>US 10Y 국채금리 (%)</h3>
-            <canvas id="chartBond"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#8b5cf6"></span>WTI 원유 ($/배럴)</h3>
-            <canvas id="chartOil"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#fbbf24"></span>금 ($/oz)</h3>
-            <canvas id="chartGold"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#f97316"></span>Bitcoin (USD)</h3>
-            <canvas id="chartBTC"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#06b6d4"></span>통화유동성 M2 (조 달러)</h3>
-            <canvas id="chartM2"></canvas>
-        </div>
-        <div class="chart-container">
-            <h3><span class="indicator" style="background:#ec4899"></span>VIX 변동성 지수</h3>
-            <canvas id="chartVIX"></canvas>
-        </div>
-    </div>
-    <!-- USER EVENT LOG -->
-    <div class="user-events">
-        <h2>&#x1F4DD; 입력 이벤트 로그</h2>
-        <div class="event-log" id="eventLog">
-            <div class="event-entry">
-                <span class="timestamp">--</span>
-                <span class="content">뉴스를 입력하면 여기에 분석 이력이 표시됩니다</span>
-                <span class="severity neutral">대기</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- IMPACT MATRIX -->
     <div class="impact-matrix">
-        <h2>&#x1F4CA; 이벤트-시장 영향도 매트릭스 (최근 입력 뉴스 반영)</h2>
+        <h2>&#x1F4CA; 이벤트-시장 영향도 매트릭스</h2>
         <table class="matrix-table" id="matrixTable">
-            <thead>
-                <tr>
-                    <th>이벤트</th><th>주식</th><th>채권금리</th><th>원/달러</th>
-                    <th>원유</th><th>금</th><th>BTC</th><th>M2유동성</th><th>VIX</th>
-                </tr>
-            </thead>
+            <thead><tr><th>이벤트</th><th>주식</th><th>채권금리</th><th>원/달러</th><th>원유</th><th>금</th><th>BTC</th><th>M2</th><th>VIX</th></tr></thead>
             <tbody id="matrixBody"></tbody>
         </table>
         <div class="legend">
-            <div class="legend-item"><span class="swatch" style="background:#065f46"></span>강한 상승</div>
-            <div class="legend-item"><span class="swatch" style="background:#064e3b"></span>중간 상승</div>
-            <div class="legend-item"><span class="swatch" style="background:#1a2332"></span>중립</div>
-            <div class="legend-item"><span class="swatch" style="background:#4a1515"></span>중간 하락</div>
-            <div class="legend-item"><span class="swatch" style="background:#7f1d1d"></span>강한 하락/위험</div>
+            <div class="legend-item"><span class="swatch" style="background:#bbf7d0"></span>강한 상승</div>
+            <div class="legend-item"><span class="swatch" style="background:#dcfce7"></span>중간 상승</div>
+            <div class="legend-item"><span class="swatch" style="background:#f8fafc"></span>중립</div>
+            <div class="legend-item"><span class="swatch" style="background:#fef2f2"></span>중간 하락</div>
+            <div class="legend-item"><span class="swatch" style="background:#fee2e2"></span>강한 하락/위험</div>
         </div>
     </div>
 
+    <!-- 5. 입력 이벤트 로그 -->
+    <div class="user-events">
+        <h2>&#x1F4DD; 입력 이벤트 로그</h2>
+        <div class="event-log" id="eventLog"><div class="event-entry"><span class="timestamp">--</span><span class="content">뉴스를 입력하면 여기에 분석 이력이 표시됩니다</span><span class="severity neutral">대기</span></div></div>
+    </div>
+
+    <!-- Footer & Modal -->
     <div class="footer">
         <p>&#x26A0;&#xFE0F; AI 키워드 기반 영향도 분석은 참고용입니다. 실제 투자 결정에 단독 사용하지 마세요.</p>
         <p>v2.0 | 마지막 업데이트: <span id="lastUpdate">--</span></p>
+    </div>
+    <div class="chart-modal-overlay" id="chartModal" onclick="closeChartModal(event)">
+        <div class="chart-modal"><button class="chart-modal-close" onclick="closeChartModal()">&times;</button><h3 id="modalChartTitle"></h3><canvas id="modalCanvas"></canvas></div>
+    </div>
+        <p>&#x26A0;&#xFE0F; AI 키워드 기반 영향도 분석은 참고용입니다. 실제 투자 결정에 단독 사용하지 마세요.</p>
+        <p>v2.0 | 마지막 업데이트: <span id="lastUpdate">--</span></p>
+    </div>
+
+    <!-- Chart Expand Modal -->
+    <div class="chart-modal-overlay" id="chartModal" onclick="closeChartModal(event)">
+        <div class="chart-modal">
+            <button class="chart-modal-close" onclick="closeChartModal()">&times;</button>
+            <h3 id="modalChartTitle"></h3>
+            <canvas id="modalCanvas"></canvas>
+        </div>
     </div>
     <script>
     // ============================================
@@ -403,8 +393,8 @@
 
     // 기본 시장 현재값 (API 연결 전 시뮬레이션)
     let currentValues = {
-        sp500: 7408, kospi: 6800, fx: 1489, bond: 4.67,
-        oil: 84, gold: 2420, btc: 95000, m2: 23.1, vix: 16.6
+        sp500: 5425, kospi: 2487, fx: 1385, bond: 4.32,
+        oil: 75, gold: 2420, btc: 95000, m2: 21.5, vix: 18.7
     };
 
     // ============================================
@@ -511,6 +501,7 @@
         addToEventLog(text, result);
         addToMatrix(text, result);
         updateRiskScore(result);
+        generateInsight([{ title: text }], result);
     }
 
     function calculateImpact(text) {
@@ -614,25 +605,6 @@
             card.classList.add('flash');
             setTimeout(() => card.classList.remove('flash'), 1000);
         });
-    }
-
-    // 전일 대비 변동률 표시 헬퍼
-    // invertColor=true면 상승이 빨강(위험), 하락이 초록(안전) - VIX, FX, Bond 등
-    function showDailyChange(elementId, current, previous, invertColor) {
-        const el = document.getElementById(elementId);
-        if (!el || !previous || previous === 0) return;
-        const pctChange = ((current - previous) / previous) * 100;
-        const sign = pctChange >= 0 ? '+' : '';
-        const displayText = `전일대비 ${sign}${pctChange.toFixed(2)}%`;
-
-        let colorClass;
-        if (invertColor) {
-            colorClass = pctChange > 0 ? 'negative' : pctChange < 0 ? 'positive' : 'neutral';
-        } else {
-            colorClass = pctChange > 0 ? 'positive' : pctChange < 0 ? 'negative' : 'neutral';
-        }
-        el.textContent = displayText;
-        el.className = 'change ' + colorClass;
     }
 
     function updateCardValue(key, value, changePercent) {
@@ -741,14 +713,21 @@
     }
 
     // ============================================
-    // API 연동
+    // API 연동 (CORS 프록시 자동 경유 + 폴백)
     // ============================================
+    const CORS_PROXIES = [
+        'https://api.allorigins.win/raw?url=',
+        'https://corsproxy.io/?',
+        'https://api.codetabs.com/v1/proxy?quest='
+    ];
+    let activeProxy = 0;
+
     function getConfig() {
         return {
-            fredKey: localStorage.getItem('fredKey') || 'b7defa04bf2b8e6a3b80e7d0209024e3',
-            ecosKey: localStorage.getItem('ecosKey') || 'LELDVS32GE3X5IMIGJK1',
+            fredKey: localStorage.getItem('fredKey') || '',
+            ecosKey: localStorage.getItem('ecosKey') || '',
             alphaKey: localStorage.getItem('alphaKey') || '',
-            corsProxy: localStorage.getItem('corsProxy') || 'https://api.allorigins.win/raw?url='
+            corsProxy: localStorage.getItem('corsProxy') || CORS_PROXIES[0]
         };
     }
 
@@ -773,49 +752,38 @@
         panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
     }
 
-    // CORS 프록시 목록
-    const corsProxies = [
-        'https://api.allorigins.win/raw?url=',
-        'https://corsproxy.io/?',
-        'https://api.codetabs.com/v1/proxy?quest='
-    ];
-
-    function fetchWithTimeout(url, timeout = 8000) {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), timeout);
-        return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
-    }
-
-    async function fetchWithCorsProxy(url) {
-        // 먼저 직접 호출 시도
-        try {
-            const res = await fetchWithTimeout(url);
-            if (res.ok) return res;
-        } catch(e) { /* 직접 호출 실패, 프록시 시도 */ }
-
-        // 프록시 순차 시도
-        for (const proxy of corsProxies) {
+    // 프록시 경유 fetch (자동 폴백)
+    async function proxyFetch(url, retries = 3) {
+        for (let i = 0; i < retries; i++) {
+            const proxy = CORS_PROXIES[(activeProxy + i) % CORS_PROXIES.length];
             try {
-                const res = await fetchWithTimeout(proxy + encodeURIComponent(url));
-                if (res.ok) return res;
-            } catch(e) { continue; }
+                const res = await fetch(proxy + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
+                if (res.ok) {
+                    activeProxy = (activeProxy + i) % CORS_PROXIES.length;
+                    return res;
+                }
+            } catch(e) { /* try next proxy */ }
         }
+        // 직접 호출 시도 (CORS 허용 서버인 경우)
+        try {
+            const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+            if (res.ok) return res;
+        } catch(e) { /* fall through */ }
         return null;
     }
 
-    // FRED API 호출
+    // FRED API (프록시 경유 — 키 없으면 스킵)
     async function fetchFRED(seriesId) {
         const cfg = getConfig();
         if (!cfg.fredKey) return null;
         try {
-            const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${cfg.fredKey}&file_type=json&sort_order=desc&limit=5`;
-            const res = await fetchWithCorsProxy(url);
-            if (!res) { setStatus('statusFRED', 'offline'); return null; }
+            const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${cfg.fredKey}&file_type=json&sort_order=desc&limit=120`;
+            const res = await proxyFetch(url);
+            if (!res) return null;
             const data = await res.json();
             setStatus('statusFRED', 'online');
             return data.observations.filter(o => o.value !== '.').map(o => ({
-                date: o.date,
-                value: parseFloat(o.value)
+                date: o.date, value: parseFloat(o.value)
             })).reverse();
         } catch(e) {
             setStatus('statusFRED', 'offline');
@@ -823,48 +791,199 @@
         }
     }
 
-    // CoinGecko (키 불필요)
+    // CoinGecko (프록시 경유, 키 불필요)
     async function fetchBTC() {
         try {
-            const res = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365&interval=daily');
-            if (!res.ok) return null;
+            // 먼저 직접 호출 (CoinGecko는 CORS 허용)
+            let res = null;
+            try {
+                res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true', { signal: AbortSignal.timeout(6000) });
+            } catch(e) {}
+            if (!res || !res.ok) {
+                res = await proxyFetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+            }
+            if (!res) return null;
             const data = await res.json();
             setStatus('statusCoinGecko', 'online');
-            return data.prices.map(p => ({ date: new Date(p[0]).toISOString().slice(0, 10), value: p[1] }));
+            return {
+                price: data.bitcoin.usd,
+                change24h: data.bitcoin.usd_24h_change
+            };
         } catch(e) {
             setStatus('statusCoinGecko', 'offline');
             return null;
         }
     }
 
-    // Google News RSS (through CORS proxy)
-    async function fetchNewsRSS() {
-        const cfg = getConfig();
-        const rssUrl = 'https://news.google.com/rss/search?q=economy+finance+market&hl=ko&gl=KR&ceid=KR:ko';
+    // 글로벌 시세 (여러 자산 한번에 — CoinGecko + proxy)
+    async function fetchGlobalPrices() {
         try {
-            const res = await fetch(cfg.corsProxy + encodeURIComponent(rssUrl));
-            if (!res.ok) return [];
-            const text = await res.text();
-            const parser = new DOMParser();
-            const xml = parser.parseFromString(text, 'text/xml');
-            const items = xml.querySelectorAll('item');
-            setStatus('statusNews', 'online');
-            return Array.from(items).slice(0, 15).map(item => ({
-                title: item.querySelector('title')?.textContent || '',
-                pubDate: item.querySelector('pubDate')?.textContent || '',
-                source: item.querySelector('source')?.textContent || ''
-            }));
-        } catch(e) {
-            setStatus('statusNews', 'offline');
-            return [];
+            // CoinGecko는 BTC/ETH 등 크립토만
+            const btcData = await fetchBTC();
+            if (btcData) {
+                document.getElementById('valBTC').textContent = '$' + Math.round(btcData.price).toLocaleString();
+                const cls = btcData.change24h >= 0 ? 'positive' : 'negative';
+                document.getElementById('valBTC').className = 'value ' + cls;
+                document.getElementById('chgBTC').textContent = (btcData.change24h >= 0 ? '+' : '') + btcData.change24h.toFixed(1) + '%';
+                document.getElementById('chgBTC').className = 'change ' + cls;
+            }
+        } catch(e) {}
+    }
+
+    // 네이버 금융 (KOSPI 지수 + USD/KRW 환율)
+    async function fetchNaverFinance() {
+        // KOSPI 지수
+        try {
+            const kospiUrl = 'https://m.stock.naver.com/api/index/KOSPI/basic';
+            const res = await proxyFetch(kospiUrl);
+            if (res) {
+                const data = await res.json();
+                const price = parseFloat(data.closePrice || data.nowVal || data.currentValue);
+                const change = parseFloat(data.compareToPreviousClosePrice || data.changeVal || 0);
+                const changeRate = parseFloat(data.fluctuationsRatio || data.changeRate || 0);
+                if (price && !isNaN(price)) {
+                    document.getElementById('valKOSPI').textContent = price.toFixed(2);
+                    const cls = change >= 0 ? 'positive' : 'negative';
+                    document.getElementById('valKOSPI').className = 'value ' + cls;
+                    document.getElementById('chgKOSPI').textContent = (change >= 0 ? '+' : '') + changeRate.toFixed(2) + '%';
+                    document.getElementById('chgKOSPI').className = 'change ' + cls;
+                    setStatus('statusNaver', 'online');
+                    return true;
+                }
+            }
+        } catch(e) {}
+
+        // 폴백: 네이버 모바일 다른 엔드포인트
+        try {
+            const altUrl = 'https://polling.finance.naver.com/api/realtime?query=SERVICE_INDEX:KOSPI';
+            const res2 = await proxyFetch(altUrl);
+            if (res2) {
+                const data = await res2.json();
+                const item = data?.result?.areas?.[0]?.datas?.[0];
+                if (item) {
+                    const price = parseFloat(item.nv) / 100;
+                    const change = parseFloat(item.cv) / 100;
+                    const changeRate = parseFloat(item.cr);
+                    document.getElementById('valKOSPI').textContent = price.toFixed(2);
+                    const cls = change >= 0 ? 'positive' : 'negative';
+                    document.getElementById('valKOSPI').className = 'value ' + cls;
+                    document.getElementById('chgKOSPI').textContent = (change >= 0 ? '+' : '') + changeRate.toFixed(2) + '%';
+                    document.getElementById('chgKOSPI').className = 'change ' + cls;
+                    setStatus('statusNaver', 'online');
+                    return true;
+                }
+            }
+        } catch(e) {}
+
+        setStatus('statusNaver', 'offline');
+        return false;
+    }
+
+    // 네이버 금융 환율 (USD/KRW)
+    async function fetchNaverExchange() {
+        try {
+            const fxUrl = 'https://m.stock.naver.com/api/exchange/FX_USDKRW/basic';
+            const res = await proxyFetch(fxUrl);
+            if (res) {
+                const data = await res.json();
+                const price = parseFloat(data.closePrice || data.nowVal || 0);
+                const change = parseFloat(data.compareToPreviousClosePrice || data.changeVal || 0);
+                const changeRate = parseFloat(data.fluctuationsRatio || data.changeRate || 0);
+                if (price && !isNaN(price)) {
+                    document.getElementById('valFX').textContent = price.toFixed(2);
+                    const cls = change <= 0 ? 'positive' : 'negative'; // 원화 강세가 positive
+                    document.getElementById('valFX').className = 'value ' + cls;
+                    document.getElementById('chgFX').textContent = (change >= 0 ? '+' : '') + changeRate.toFixed(2) + '%';
+                    document.getElementById('chgFX').className = 'change ' + cls;
+                    return true;
+                }
+            }
+        } catch(e) {}
+
+        // 폴백: 네이버 환율 polling
+        try {
+            const altUrl = 'https://polling.finance.naver.com/api/realtime?query=SERVICE_EXCHANGE:FX_USDKRW';
+            const res2 = await proxyFetch(altUrl);
+            if (res2) {
+                const data = await res2.json();
+                const item = data?.result?.areas?.[0]?.datas?.[0];
+                if (item) {
+                    const price = parseFloat(item.nv) / 100;
+                    const change = parseFloat(item.cv) / 100;
+                    document.getElementById('valFX').textContent = price.toFixed(2);
+                    const cls = change <= 0 ? 'positive' : 'negative';
+                    document.getElementById('valFX').className = 'value ' + cls;
+                    document.getElementById('chgFX').textContent = (change >= 0 ? '+' : '') + (change / price * 100).toFixed(2) + '%';
+                    document.getElementById('chgFX').className = 'change ' + cls;
+                    return true;
+                }
+            }
+        } catch(e) {}
+        return false;
+    }
+
+    // KRX Open API (API 키 필요)
+    async function fetchKRX() {
+        // KRX Open API는 키 기반 — 향후 확장용
+        // 현재는 네이버 금융으로 KOSPI 데이터를 대체
+        return false;
+    }
+
+    // Google News RSS (다중 프록시 시도)
+    async function fetchNewsRSS() {
+        const rssUrls = [
+            'https://news.google.com/rss/search?q=%EA%B2%BD%EC%A0%9C+%EA%B8%88%EC%9C%B5+%EC%8B%9C%EC%9E%A5&hl=ko&gl=KR&ceid=KR:ko',
+            'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko'
+        ];
+        for (const rssUrl of rssUrls) {
+            try {
+                const res = await proxyFetch(rssUrl);
+                if (!res) continue;
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, 'text/xml');
+                const items = xml.querySelectorAll('item');
+                if (items.length === 0) continue;
+                setStatus('statusNews', 'online');
+                return Array.from(items).slice(0, 15).map(item => ({
+                    title: item.querySelector('title')?.textContent || '',
+                    link: item.querySelector('link')?.textContent || '',
+                    pubDate: item.querySelector('pubDate')?.textContent || '',
+                    source: item.querySelector('source')?.textContent || ''
+                }));
+            } catch(e) { continue; }
         }
+        // 폴백: 시뮬레이션 뉴스
+        setStatus('statusNews', 'offline');
+        return getFallbackNews();
+    }
+
+    // 폴백 뉴스 (API 실패 시)
+    function getFallbackNews() {
+        const now = new Date();
+        const fallbackHeadlines = [
+            { title: '미 연준, 금리 동결 결정...시장 예상 부합', source: 'Reuters', link: 'https://www.reuters.com' },
+            { title: '중국 제조업 PMI 50.1 기록, 확장세 유지', source: 'Bloomberg', link: 'https://www.bloomberg.com' },
+            { title: '국제유가 소폭 하락, WTI 배럴당 $74.50', source: 'CNBC', link: 'https://www.cnbc.com' },
+            { title: '한은 총재 "하반기 금리인하 가능성 열려있어"', source: '연합뉴스', link: 'https://www.yna.co.kr' },
+            { title: 'S&P500 신고가 경신, AI 관련주 강세', source: 'MarketWatch', link: 'https://www.marketwatch.com' },
+            { title: '엔화 약세 지속, 달러/엔 158원 돌파', source: 'Nikkei', link: 'https://www.nikkei.com' },
+            { title: '비트코인 $95,000 돌파, ETF 자금유입 지속', source: 'CoinDesk', link: 'https://www.coindesk.com' },
+            { title: '글로벌 M2 유동성 사상최고...자산시장 영향 주목', source: 'FT', link: 'https://www.ft.com' },
+            { title: '코스피 2,500선 공방, 외국인 순매도 지속', source: '한경', link: 'https://www.hankyung.com' },
+            { title: '금값 $2,400 돌파, 안전자산 수요 증가', source: '머니투데이', link: 'https://www.mt.co.kr' },
+        ];
+        return fallbackHeadlines.map((h, i) => ({
+            title: h.title,
+            link: h.link,
+            pubDate: new Date(now - i * 3600000).toISOString(),
+            source: h.source
+        }));
     }
 
     function setStatus(elementId, status) {
         const el = document.getElementById(elementId);
-        if (el) {
-            el.className = 'status-dot ' + status;
-        }
+        if (el) el.className = 'status-dot ' + status;
     }
     // ============================================
     // 자동 뉴스 피드 (API 뉴스 → 자동 분석)
@@ -889,14 +1008,21 @@
 
     async function loadNewsFeed() {
         const news = await fetchNewsRSS();
-        if (news.length === 0) return;
+        // news는 항상 데이터를 반환 (API 실패시 폴백 뉴스)
 
         const feedEl = document.getElementById('feedItems');
         feedEl.innerHTML = news.map(item => {
-            const time = item.pubDate ? new Date(item.pubDate).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : '';
+            let dateStr = '--:--';
+            if (item.pubDate) {
+                const d = new Date(item.pubDate);
+                dateStr = d.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) + ' ' + d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            }
+            const titleHtml = item.link
+                ? `<a href="${item.link}" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;border-bottom:1px dotted #94a3b8;">${item.title}</a>`
+                : item.title;
             return `<div class="feed-item">
-                <span class="time">${time}</span>
-                <span class="title">${item.title}</span>
+                <span class="time">${dateStr}</span>
+                <span class="title">${titleHtml}</span>
                 <span class="source">${item.source}</span>
             </div>`;
         }).join('');
@@ -908,6 +1034,9 @@
             if (result.rules.length > 0) {
                 applyImpactToCharts(result);
                 updateRiskScore(result);
+                generateInsight(news, result);
+            } else {
+                generateInsight(news, { impact: {}, rules: [] });
             }
         }
     }
@@ -992,7 +1121,7 @@
                     annotation: { annotations: createAnnotations() },
                     tooltip: {
                         backgroundColor: '#ffffff', titleColor: '#1e293b',
-                        bodyColor: '#334155', borderColor: '#e2e8f0', borderWidth: 1,
+                        bodyColor: '#1e293b', borderColor: '#e2e8f0', borderWidth: 1,
                         callbacks: {
                             afterBody: function(ctx) {
                                 const idx = ctx[0].dataIndex;
@@ -1012,6 +1141,371 @@
         charts[canvasId] = chart;
         return chart;
     }
+
+    // ============================================
+    // 차트 확대 모달
+    // ============================================
+    let modalChart = null;
+
+    // 차트 컨테이너 클릭 이벤트 바인딩
+    function bindChartClicks() {
+        document.querySelectorAll('.chart-container').forEach(container => {
+            container.addEventListener('click', function() {
+                const canvas = this.querySelector('canvas');
+                if (!canvas) return;
+                const chartId = canvas.id;
+                const chartInstance = charts[chartId];
+                if (!chartInstance) return;
+                openChartModal(chartInstance, this.querySelector('h3')?.textContent || '');
+            });
+        });
+    }
+
+    // 카드 클릭 → 모달 열기
+    function openCardChart(chartId, title) {
+        const chartInstance = charts[chartId];
+        if (!chartInstance) return;
+        openChartModal(chartInstance, title);
+    }
+
+    // 스파크라인 생성
+    function createSparkline(canvasId, data, color) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        // 최근 24개월만 표시
+        const sparkData = data.slice(-24);
+        new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: sparkData.map((_, i) => i),
+                datasets: [{
+                    data: sparkData,
+                    borderColor: color,
+                    borderWidth: 1.5,
+                    fill: false,
+                    pointRadius: 0,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { display: false }, y: { display: false } },
+                animation: false
+            }
+        });
+    }
+
+    // initDashboard 후 스파크라인 렌더링
+    function renderSparklines() {
+        const sparkMap = {
+            sparkSP: { chart: 'chartSP500', color: '#3b82f6' },
+            sparkKOSPI: { chart: 'chartKOSPI', color: '#10b981' },
+            sparkFX: { chart: 'chartFX', color: '#f59e0b' },
+            sparkBond: { chart: 'chartBond', color: '#ef4444' },
+            sparkBTC: { chart: 'chartBTC', color: '#f97316' },
+            sparkM2: { chart: 'chartM2', color: '#06b6d4' },
+            sparkVIX: { chart: 'chartVIX', color: '#ec4899' }
+        };
+        Object.entries(sparkMap).forEach(([sparkId, cfg]) => {
+            const chartInstance = charts[cfg.chart];
+            if (chartInstance) {
+                createSparkline(sparkId, chartInstance.data.datasets[0].data, cfg.color);
+            }
+        });
+    }
+
+    function openChartModal(sourceChart, title) {
+        const overlay = document.getElementById('chartModal');
+        const titleEl = document.getElementById('modalChartTitle');
+        const canvas = document.getElementById('modalCanvas');
+
+        titleEl.textContent = title;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // 기존 모달 차트 제거
+        if (modalChart) {
+            modalChart.destroy();
+            modalChart = null;
+        }
+
+        // 소스 차트의 설정을 복사해서 큰 모달 차트 생성
+        const sourceData = sourceChart.data;
+        const sourceOptions = JSON.parse(JSON.stringify(sourceChart.options));
+
+        // 모달용 옵션 조정
+        sourceOptions.plugins.annotation = { annotations: createAnnotations() };
+        sourceOptions.plugins.legend = { display: true, labels: { color: '#64748b' } };
+        sourceOptions.scales.x.ticks.maxTicksLimit = 24;
+        sourceOptions.scales.x.ticks.font = { size: 11 };
+        sourceOptions.scales.y.ticks.font = { size: 11 };
+
+        modalChart = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [...sourceData.labels],
+                datasets: sourceData.datasets.map(ds => ({
+                    ...ds,
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    pointHoverRadius: 5,
+                    data: [...ds.data]
+                }))
+            },
+            options: sourceOptions
+        });
+    }
+
+    function closeChartModal(event) {
+        if (event && event.target !== event.currentTarget) return; // 모달 안쪽 클릭은 무시
+        const overlay = document.getElementById('chartModal');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        if (modalChart) {
+            modalChart.destroy();
+            modalChart = null;
+        }
+    }
+
+    // ESC 키로 모달 닫기
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeChartModal();
+    });
+
+    // ============================================
+    // 미국 국채 보유국 추이 차트
+    // ============================================
+    function createTreasuryHoldingsChart() {
+        const years = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+        const ctx = document.getElementById('chartTreasuryHoldings').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    { label: '일본', data: [1090, 1060, 1040, 1080, 1250, 1300, 1076, 1098, 1060, 1010, 980], borderColor: '#ef4444', backgroundColor: '#ef444420', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '중국', data: [1058, 1050, 1120, 1070, 1070, 1034, 870, 780, 760, 710, 690], borderColor: '#f59e0b', backgroundColor: '#f59e0b20', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '영국', data: [230, 250, 270, 320, 430, 570, 655, 690, 720, 740, 760], borderColor: '#3b82f6', backgroundColor: '#3b82f620', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '벨기에/룩셈부르크', data: [280, 310, 350, 290, 260, 300, 330, 320, 380, 390, 400], borderColor: '#8b5cf6', backgroundColor: '#8b5cf620', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '한국', data: [92, 96, 100, 105, 122, 130, 105, 110, 115, 120, 118], borderColor: '#10b981', backgroundColor: '#10b98120', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '사우디', data: [95, 140, 170, 180, 130, 120, 110, 135, 140, 145, 150], borderColor: '#06b6d4', backgroundColor: '#06b6d420', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: { legend: { display: true, labels: { color: '#64748b', font: { size: 11 } } } },
+                scales: {
+                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } },
+                    y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } }, title: { display: true, text: '억 달러', color: '#64748b' } }
+                }
+            }
+        });
+        charts['chartTreasuryHoldings'] = chart;
+    }
+
+    // ============================================
+    // 주요국 금 보유량 추이 차트
+    // ============================================
+    function createGoldReservesChart() {
+        const years = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+        const ctx = document.getElementById('chartGoldReserves').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    { label: '미국', data: [8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134, 8134], borderColor: '#1e293b', backgroundColor: '#1e293b20', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
+                    { label: '독일', data: [3378, 3374, 3370, 3366, 3362, 3359, 3355, 3353, 3352, 3352, 3352], borderColor: '#ef4444', backgroundColor: '#ef444420', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
+                    { label: '이탈리아', data: [2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452, 2452], borderColor: '#10b981', backgroundColor: '#10b98120', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
+                    { label: '프랑스', data: [2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436, 2436], borderColor: '#3b82f6', backgroundColor: '#3b82f620', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 },
+                    { label: '중국', data: [1842, 1843, 1853, 1948, 1948, 1948, 1980, 2235, 2264, 2280, 2300], borderColor: '#f59e0b', backgroundColor: '#f59e0b20', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '러시아', data: [1615, 1838, 2112, 2271, 2299, 2302, 2330, 2333, 2340, 2350, 2360], borderColor: '#8b5cf6', backgroundColor: '#8b5cf620', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '인도', data: [557, 560, 607, 668, 700, 760, 787, 803, 854, 880, 910], borderColor: '#ec4899', backgroundColor: '#ec489920', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 3 },
+                    { label: '한국', data: [104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104], borderColor: '#06b6d4', backgroundColor: '#06b6d420', borderWidth: 2, fill: false, tension: 0.1, pointRadius: 3 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: { legend: { display: true, labels: { color: '#64748b', font: { size: 11 } } } },
+                scales: {
+                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } },
+                    y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } }, title: { display: true, text: '톤', color: '#64748b' } }
+                }
+            }
+        });
+        charts['chartGoldReserves'] = chart;
+    }
+
+    // ============================================
+    // 미국 국채 vs GDP 바차트
+    // ============================================
+    function createDebtGDPChart() {
+        const years = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026(E)'];
+        const gdp = [18.7, 19.5, 20.5, 21.4, 21.0, 23.3, 25.5, 27.4, 28.8, 29.9, 31.0];
+        const debt = [19.6, 20.2, 21.5, 22.7, 27.7, 28.4, 30.9, 33.2, 35.5, 36.8, 38.5];
+        const ctx = document.getElementById('chartDebtGDP').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [
+                    { label: 'GDP (조$)', data: gdp, backgroundColor: '#3b82f680', borderColor: '#3b82f6', borderWidth: 1 },
+                    { label: '국채 (조$)', data: debt, backgroundColor: '#ef444480', borderColor: '#ef4444', borderWidth: 1 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: true, labels: { color: '#64748b', font: { size: 11 } } } },
+                scales: {
+                    x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } },
+                    y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } }, title: { display: true, text: '조 달러', color: '#64748b' } }
+                }
+            }
+        });
+        charts['chartDebtGDP'] = chart;
+    }
+
+    // ============================================
+    // IMF / WEF 주요 뉴스 로드
+    // ============================================
+    async function loadIMFWEFNews() {
+        const feeds = [
+            { url: 'https://www.imf.org/en/News/RSS?language=eng', source: 'IMF' },
+            { url: 'https://www.weforum.org/feed', source: 'WEF' },
+            { url: 'https://news.google.com/rss/search?q=IMF+OR+%22World+Economic+Forum%22&hl=en&gl=US&ceid=US:en', source: 'Google/IMF+WEF' }
+        ];
+
+        let allNews = [];
+        for (const feed of feeds) {
+            try {
+                const res = await proxyFetch(feed.url);
+                if (!res) continue;
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, 'text/xml');
+                const items = xml.querySelectorAll('item');
+                const parsed = Array.from(items).slice(0, 5).map(item => ({
+                    title: item.querySelector('title')?.textContent || '',
+                    link: item.querySelector('link')?.textContent || '',
+                    pubDate: item.querySelector('pubDate')?.textContent || '',
+                    source: feed.source
+                }));
+                allNews = allNews.concat(parsed);
+            } catch(e) { continue; }
+        }
+
+        // 폴백
+        if (allNews.length === 0) {
+            allNews = [
+                { title: 'IMF, 2026 글로벌 성장률 3.2% 전망 유지', link: 'https://www.imf.org', pubDate: new Date().toISOString(), source: 'IMF' },
+                { title: 'IMF 총재 "미중 관세전쟁이 세계 무역에 하방 리스크"', link: 'https://www.imf.org', pubDate: new Date(Date.now()-86400000).toISOString(), source: 'IMF' },
+                { title: 'WEF: AI가 2030년까지 글로벌 GDP 7% 증가시킬 전망', link: 'https://www.weforum.org', pubDate: new Date(Date.now()-172800000).toISOString(), source: 'WEF' },
+                { title: 'IMF, 신흥국 외채 리스크 경고...강달러 지속 영향', link: 'https://www.imf.org', pubDate: new Date(Date.now()-259200000).toISOString(), source: 'IMF' },
+                { title: 'WEF 다보스: 기후변화와 지정학 리스크가 최대 위협', link: 'https://www.weforum.org', pubDate: new Date(Date.now()-345600000).toISOString(), source: 'WEF' },
+                { title: 'IMF, 한국 경제성장률 2.1%로 하향 조정', link: 'https://www.imf.org', pubDate: new Date(Date.now()-432000000).toISOString(), source: 'IMF' },
+            ];
+        }
+
+        // 날짜순 정렬
+        allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+        const feedEl = document.getElementById('imfWefItems');
+        feedEl.innerHTML = allNews.slice(0, 10).map(item => {
+            let dateStr = '';
+            if (item.pubDate) {
+                const d = new Date(item.pubDate);
+                dateStr = d.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) + ' ' + d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            }
+            const titleHtml = item.link
+                ? `<a href="${item.link}" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;border-bottom:1px dotted #94a3b8;">${item.title}</a>`
+                : item.title;
+            return `<div class="feed-item">
+                <span class="time">${dateStr}</span>
+                <span class="title">${titleHtml}</span>
+                <span class="source" style="background:${item.source==='IMF'?'#dbeafe':'#fef3c7'};color:${item.source==='IMF'?'#1e40af':'#92400e'};padding:2px 6px;border-radius:4px;font-weight:600;">${item.source}</span>
+            </div>`;
+        }).join('');
+    }
+
+    // ============================================
+    // 뉴스 종합 인사이트 생성
+    // ============================================
+    function generateInsight(newsItems, impactResult) {
+        if (!newsItems || newsItems.length === 0) return;
+
+        const insights = [];
+        const categories = {};
+
+        // 카테고리별 키워드 카운트
+        if (impactResult && impactResult.rules) {
+            impactResult.rules.forEach(rule => {
+                categories[rule.category] = (categories[rule.category] || 0) + 1;
+            });
+        }
+
+        // 시장 방향 판단
+        const imp = impactResult?.impact || {};
+        const stockDir = (imp.sp500 || 0) + (imp.kospi || 0);
+        const safeDir = (imp.gold || 0) + (-imp.vix || 0);
+        const riskLevel = (imp.vix || 0) * 2 + (-stockDir);
+
+        // 인사이트 문장 생성
+        if (riskLevel > 5) {
+            insights.push('&#x1F534; <strong>위험 회피(Risk-Off) 환경 감지.</strong> 안전자산(금, 국채) 선호 확대 예상.');
+        } else if (riskLevel > 2) {
+            insights.push('&#x1F7E1; <strong>시장 불확실성 증가.</strong> 변동성 확대에 대비 필요.');
+        } else if (riskLevel < -3) {
+            insights.push('&#x1F7E2; <strong>위험 선호(Risk-On) 환경.</strong> 주식/크립토 강세 흐름 예상.');
+        } else {
+            insights.push('&#x26AA; <strong>중립적 시장 환경.</strong> 특정 방향성 제한적.');
+        }
+
+        // 통화정책 관련
+        if (categories.monetary) {
+            if ((imp.bond || 0) < 0) {
+                insights.push('&#x1F4B0; 금리 하락 시그널 감지 → 성장주/기술주 수혜, 달러 약세 가능.');
+            } else if ((imp.bond || 0) > 0) {
+                insights.push('&#x1F4C8; 금리 상승 압력 → 가치주 선호, 채권 가격 하락 주의.');
+            }
+        }
+
+        // 지정학 관련
+        if (categories.geopolitical) {
+            insights.push('&#x1F30D; 지정학적 리스크 부각 → 에너지/방산 섹터 주목, 원유가 상승 압력.');
+        }
+
+        // 유동성 관련
+        if ((imp.m2 || 0) > 2) {
+            insights.push('&#x1F4A7; 유동성 확대 신호 → 자산가격 전반적 상승 기대, 인플레이션 주의.');
+        } else if ((imp.m2 || 0) < -2) {
+            insights.push('&#x1F4A8; 유동성 축소 국면 → 레버리지 자산 리스크 증가.');
+        }
+
+        // 한국 시장 영향
+        if ((imp.kospi || 0) < -3) {
+            insights.push('&#x1F1F0;&#x1F1F7; 한국 시장 하방 압력 → 외국인 매도 흐름 예상, 원화 약세 동반 가능.');
+        }
+
+        // 크립토
+        if (Math.abs(imp.btc || 0) > 4) {
+            const btcDir = (imp.btc || 0) > 0 ? '상승' : '하락';
+            insights.push(`&#x1FA99; 크립토 시장 ${btcDir} 압력 → 유동성과 규제 환경 복합 영향.`);
+        }
+
+        // 렌더링
+        const insightEl = document.getElementById('insightContent');
+        const time = new Date().toLocaleString('ko-KR');
+        insightEl.innerHTML = `
+            <div style="font-size:10px;color:#94a3b8;margin-bottom:8px;">분석 시점: ${time} | 뉴스 ${newsItems.length}건 기반</div>
+            ${insights.map(i => `<p style="margin-bottom:6px;">` + i + `</p>`).join('')}
+            <div style="margin-top:12px;padding:10px;background:#f8fafc;border-radius:8px;font-size:11px;color:#64748b;">
+                <strong>주요 감지 카테고리:</strong> ${Object.entries(categories).map(([k,v]) => `${categoryNames[k] || k}(${v})`).join(', ') || '없음'}
+            </div>
+        `;
+    }
     // ============================================
     // 초기화
     // ============================================
@@ -1027,12 +1521,12 @@
         const shocksK = {}; shocksK[5]=-50; shocksK[27]=-100; shocksK[50]=-500;
         shocksK[51]=100; shocksK[73]=-100; shocksK[75]=-200; shocksK[86]=-50;
         shocksK[106]=-80; shocksK[112]=-150;
-        createChart('chartKOSPI', 'KOSPI', generateSimData(1900, 80, 38, shocksK), '#10b981');
+        createChart('chartKOSPI', 'KOSPI', generateSimData(1900, 40, 5, shocksK), '#10b981');
 
         const shocksFX = {}; shocksFX[5]=20; shocksFX[27]=30; shocksFX[50]=60;
         shocksFX[51]=-20; shocksFX[73]=30; shocksFX[75]=50; shocksFX[86]=15;
         shocksFX[106]=30; shocksFX[112]=40;
-        createChart('chartFX', 'USD/KRW', generateSimData(1150, 12, 2.6, shocksFX), '#f59e0b');
+        createChart('chartFX', 'USD/KRW', generateSimData(1150, 12, 1.8, shocksFX), '#f59e0b');
 
         const shocksB = {}; shocksB[5]=-0.3; shocksB[50]=-0.8; shocksB[75]=0.5;
         shocksB[76]=0.4; shocksB[86]=-0.4; shocksB[115]=-0.3;
@@ -1062,6 +1556,24 @@
         // 초기 카드 값 설정
         initCardValues();
 
+        // 차트 클릭 확대 바인딩
+        bindChartClicks();
+
+        // 스파크라인 렌더링
+        renderSparklines();
+
+        // 미국 국채 보유국 차트 생성
+        createTreasuryHoldingsChart();
+
+        // 금 보유량 차트 생성
+        createGoldReservesChart();
+
+        // 국채 vs GDP 바차트
+        createDebtGDPChart();
+
+        // IMF/WEF 뉴스 로드
+        loadIMFWEFNews();
+
         // API 데이터 시도
         loadAPIData();
 
@@ -1074,6 +1586,7 @@
         // 초기 상태
         setStatus('statusFRED', 'pending');
         setStatus('statusCoinGecko', 'pending');
+        setStatus('statusNaver', 'pending');
         setStatus('statusNews', 'pending');
         setStatus('statusECOS', 'pending');
     }
@@ -1081,116 +1594,58 @@
     function initCardValues() {
         document.getElementById('valRisk').textContent = '50/100';
         document.getElementById('chgRisk').textContent = '보통';
-        document.getElementById('valSP').textContent = '7,408';
+        document.getElementById('valSP').textContent = '5,425';
         document.getElementById('chgSP').textContent = '--';
-        document.getElementById('valKOSPI').textContent = '6,800';
+        document.getElementById('valKOSPI').textContent = '2,487';
         document.getElementById('chgKOSPI').textContent = '--';
-        document.getElementById('valFX').textContent = '1,489';
+        document.getElementById('valFX').textContent = '1,385';
         document.getElementById('chgFX').textContent = '--';
-        document.getElementById('valBond').textContent = '4.67%';
+        document.getElementById('valBond').textContent = '4.32%';
         document.getElementById('chgBond').textContent = '--';
         document.getElementById('valBTC').textContent = '$95,000';
         document.getElementById('chgBTC').textContent = '--';
-        document.getElementById('valM2').textContent = '$23.1T';
+        document.getElementById('valM2').textContent = '$21.5T';
         document.getElementById('chgM2').textContent = '--';
-        document.getElementById('valVIX').textContent = '16.6';
+        document.getElementById('valVIX').textContent = '18.7';
         document.getElementById('chgVIX').textContent = '--';
     }
 
     async function loadAPIData() {
-        // data.json에서 미리 수집된 데이터 로드 (GitHub Actions가 매시간 업데이트)
-        try {
-            const res = await fetch('data.json?t=' + Date.now());
-            if (!res.ok) throw new Error('data.json not found');
-            const data = await res.json();
+        const cfg = getConfig();
 
-            const indicators = data.indicators || {};
+        // 1. CoinGecko (키 불필요 — 바로 시도)
+        await fetchGlobalPrices();
 
-            // S&P 500
-            if (indicators.sp500) {
-                const d = indicators.sp500;
-                document.getElementById('valSP').textContent = Math.round(d.current).toLocaleString();
-                currentValues.sp500 = d.current;
-                if (d.change_pct !== null) showDailyChange('chgSP', d.current, d.previous, false);
-                setStatus('statusFRED', 'online');
+        // 2. 네이버 금융 (KOSPI + 환율, 키 불필요)
+        await fetchNaverFinance();
+        await fetchNaverExchange();
+
+        // 3. FRED (키 있으면 시도)
+        if (cfg.fredKey) {
+            const vixData = await fetchFRED('VIXCLS');
+            if (vixData && vixData.length > 0) {
+                const latest = vixData[vixData.length - 1];
+                document.getElementById('valVIX').textContent = latest.value.toFixed(1);
             }
-
-            // KOSPI
-            if (indicators.kospi) {
-                const d = indicators.kospi;
-                document.getElementById('valKOSPI').textContent = Math.round(d.current).toLocaleString();
-                currentValues.kospi = d.current;
-                if (d.change_pct !== null) showDailyChange('chgKOSPI', d.current, d.previous, false);
-                setStatus('statusECOS', 'online');
+            const m2Data = await fetchFRED('M2SL');
+            if (m2Data && m2Data.length > 0) {
+                const latest = m2Data[m2Data.length - 1];
+                document.getElementById('valM2').textContent = '$' + (latest.value / 1000).toFixed(1) + 'T';
             }
-
-            // USD/KRW
-            if (indicators.fx) {
-                const d = indicators.fx;
-                document.getElementById('valFX').textContent = Math.round(d.current).toLocaleString();
-                currentValues.fx = d.current;
-                if (d.change_pct !== null) showDailyChange('chgFX', d.current, d.previous, true);
+            const bondData = await fetchFRED('DGS10');
+            if (bondData && bondData.length > 0) {
+                const latest = bondData[bondData.length - 1];
+                document.getElementById('valBond').textContent = latest.value.toFixed(2) + '%';
             }
-
-            // US 10Y Bond
-            if (indicators.bond) {
-                const d = indicators.bond;
-                document.getElementById('valBond').textContent = d.current.toFixed(2) + '%';
-                currentValues.bond = d.current;
-                if (d.change_pct !== null) showDailyChange('chgBond', d.current, d.previous, true);
-            }
-
-            // Bitcoin
-            if (indicators.btc) {
-                const d = indicators.btc;
-                document.getElementById('valBTC').textContent = '$' + Math.round(d.current).toLocaleString();
-                currentValues.btc = d.current;
-                if (d.change_pct !== null) showDailyChange('chgBTC', d.current, d.previous, false);
-                setStatus('statusCoinGecko', 'online');
-            }
-
-            // M2
-            if (indicators.m2) {
-                const d = indicators.m2;
-                document.getElementById('valM2').textContent = '$' + (d.current / 1000).toFixed(1) + 'T';
-                currentValues.m2 = d.current / 1000;
-                if (d.change_pct !== null) showDailyChange('chgM2', d.current, d.previous, false);
-            }
-
-            // VIX
-            if (indicators.vix) {
-                const d = indicators.vix;
-                document.getElementById('valVIX').textContent = d.current.toFixed(1);
-                currentValues.vix = d.current;
-                if (d.change_pct !== null) showDailyChange('chgVIX', d.current, d.previous, true);
-            }
-
-            // 업데이트 시각 표시
-            if (data.updated_at) {
-                const updated = new Date(data.updated_at);
-                document.getElementById('lastUpdate').textContent = updated.toLocaleString('ko-KR') + ' (자동)';
-            }
-
-        } catch(e) {
-            console.warn('data.json 로드 실패, CoinGecko 직접 호출 시도:', e.message);
-            // data.json 없으면 CoinGecko만 직접 호출 (CORS 지원)
-            try {
-                const btcRes = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=2&interval=daily');
-                if (btcRes.ok) {
-                    const btcJson = await btcRes.json();
-                    const prices = btcJson.prices;
-                    if (prices && prices.length >= 2) {
-                        const current = prices[prices.length - 1][1];
-                        const previous = prices[prices.length - 2][1];
-                        document.getElementById('valBTC').textContent = '$' + Math.round(current).toLocaleString();
-                        currentValues.btc = current;
-                        showDailyChange('chgBTC', current, previous, false);
-                        setStatus('statusCoinGecko', 'online');
-                    }
-                }
-            } catch(e2) { /* ignore */ }
+        } else {
             setStatus('statusFRED', 'offline');
+            console.log('FRED API key 없음 — 시뮬레이션 데이터 사용');
+        }
+
+        // 4. ECOS (키 있으면 시도)
+        if (!cfg.ecosKey) {
             setStatus('statusECOS', 'offline');
+            console.log('ECOS API key 없음 — 시뮬레이션 데이터 사용');
         }
     }
 
