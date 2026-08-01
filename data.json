@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-08-01T15:43:00.693776+00:00",
+  "lastUpdated": "2026-08-01T20:42:23.084176+00:00",
   "market": {
     "btc": {
-      "price": 63000,
-      "change24h": 0.5148496124581762
+      "price": 62529,
+      "change24h": -0.5939455157120956
     },
     "btcHistory": [
       {
@@ -368,7 +368,7 @@
       },
       {
         "date": "2026-08-01",
-        "value": 63004.47505264108
+        "value": 62540.44430006298
       }
     ]
   },
@@ -386,16 +386,16 @@
       "source": "천지일보"
     },
     {
-      "title": "경제·금융당국 \"단일종목 레버리지 책임 무겁다…보완책 신속 추진\" - 프레시안",
-      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1FSC0xS05uTlUwRjZnYlQtbDJ1dVE3QTBsRUdmdUl0dmdwYlhNVGI5YmpSaGxWOGEzOFZqdm1IeVBqYl9wTzdNVzNJdTNsU1JLUUZkcFZXS1dFd0xnemdTTC1aX2FkT2JYMEEw?oc=5",
-      "pubDate": "Wed, 29 Jul 2026 19:23:06 GMT",
-      "source": "프레시안"
-    },
-    {
       "title": "미국발 긴축 우려에…금융시장 불확실성 확대 - 프라임경제",
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBFZnIyOG4zb3ExOFFsMDU3WGh0WDFTWDZNQTFvVzJvME9WRnlnVWIyX1FqQU1LcDdtQURtRjFFWVkyMk1lQkZrdm9lbGZ1QldoTEF3alpDUG9NU0xmNl82VVFQWkdKLUh4eWxQcVZjMGFMZw?oc=5",
       "pubDate": "Thu, 30 Jul 2026 02:07:07 GMT",
       "source": "프라임경제"
+    },
+    {
+      "title": "경제·금융당국 \"단일종목 레버리지 책임 무겁다…보완책 신속 추진\" - 프레시안",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1FSC0xS05uTlUwRjZnYlQtbDJ1dVE3QTBsRUdmdUl0dmdwYlhNVGI5YmpSaGxWOGEzOFZqdm1IeVBqYl9wTzdNVzNJdTNsU1JLUUZkcFZXS1dFd0xnemdTTC1aX2FkT2JYMEEw?oc=5",
+      "pubDate": "Wed, 29 Jul 2026 19:23:06 GMT",
+      "source": "프레시안"
     },
     {
       "title": "구윤철 “실물경제 견조…중동전쟁·금융시장 변동성 적기 대응” - 데일리안",
@@ -428,6 +428,12 @@
       "source": "헤럴드경제"
     },
     {
+      "title": "美 금리 동결에도 고물가·중동 불안…정부 시장 영향 면밀 점검 - 아주경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5GV2hzVDFlSXR6c2gtNVY2b0xWZ1FRQVBGQlgtOWQyaFQyekNuRU8xUHh3V3hSYXFPZjRPZHhOTzJaUjRBVHB0TmRlT1N0ZXhQenYtQlVwTG9UZ9IBWEFVX3lxTFA1bElsdUh3UWlvaFFTaEhrUlp1VmdXY00zRUtlS2ZQTm9YMG1DNExQanFzU2NIay12SWVTSTNKMW0ySWhjdURoaE8wYnEzQ0Q3MnlGa2s1RGM?oc=5",
+      "pubDate": "Thu, 30 Jul 2026 00:45:41 GMT",
+      "source": "아주경제"
+    },
+    {
       "title": "정부, 美금리동결에 \"국내 경제·금융시장 영향 면밀 점검\" - 연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1vd1ZiZzdqTmR3Y1dQSkZUdUpFeTRHRGR0Mm9lM05SS1dKY0t2eFdZY05mVldXNjhaT1JfLTh5Ry1wLXMydzNZTzhIYzRPdnNjaHZnTkxrbUVnQU3SAWBBVV95cUxNdzBrU3VYTi1Mb2xQSjRZakxkVVpudWhmQktiZGhrd1ZRM053VjNyZVAzRVN4YXEtU0dta1lpZERvYWhBanV0QVZXVVc4dE5Hd084OGx1SnE2VUY4T0ZXOHM?oc=5",
       "pubDate": "Thu, 30 Jul 2026 01:07:23 GMT",
@@ -438,12 +444,6 @@
       "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOZTY0S3YwaVVMNDI2WkhZWlFaZ3ZRUDhYUGpYWC10NzlZbi1wSHlCSnNVRzR1NzFSbTBPaUEwYzZKVkw2TnBZckFDQjRkQzRMMkE2U3cwVmpLMzViYks4X09vcmdua2ZxbnVsT0NqdkpYVnlURWlBZDVld2s5cXlJcHZVaXBpeFd3YlBGTmJB?oc=5",
       "pubDate": "Thu, 30 Jul 2026 01:23:00 GMT",
       "source": "국제신문"
-    },
-    {
-      "title": "정부 \"美 경기·AI 투자 견조…고물가에 금리경로 불확실성 지속\" | - 연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBMSGRBcTdvQnNtMmZiMmZRTEZoT3hXdTAzclBfd2VxUElENmpzVFd1XzFsRGFKY1hUZjhLWG9aRTY4RTVzZUtHOGVpajNGNzgwWG5BMl96TVRfc3FWMlRRZ2RzdjNMQVphWWl6bFUxYkNURkJN?oc=5",
-      "pubDate": "Thu, 30 Jul 2026 00:58:10 GMT",
-      "source": "연합인포맥스"
     },
     {
       "title": "정부 \"美경기·AI투자 견조…고물가에 금리경로 불확실성 지속\" - v.daum.net",
